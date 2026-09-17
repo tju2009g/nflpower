@@ -45,6 +45,12 @@ TEAM_METADATA = {
 
 NAME_MAP = {'LA': 'LAR', 'OAK': 'LV', 'SD': 'LAC', 'STL': 'LAR'}
 
+# 표본 부족 시 조기 포화(1경기만에 99/30 캡에 몰리는 문제)를 막기 위한
+# 베이지안 축소 상수 — "K경기 분량의 중립 사전분포"를 실제 경기 수와 섞는다.
+# gp가 커질수록(시즌이 진행될수록) 실제 성적 비중이 자연히 커짐.
+SHRINKAGE_GAMES = 3
+
+
 def fetch_and_calculate_stats():
     team_stats = {
         tid: {'wins': 0, 'losses': 0, 'ties': 0, 'points_for': 0, 'points_against': 0, 'games_played': 0}
@@ -57,13 +63,15 @@ def fetch_and_calculate_stats():
             csv_text = resp.read().decode('utf-8')
 
         rows = list(csv.DictReader(io.StringIO(csv_text)))
-        
+
         # 1. 최신 정규시즌 연도(Season) 자동 탐색
         seasons_with_scores = [
-            int(r['season']) for r in rows 
+            int(r['season']) for r in rows
             if r.get('game_type') == 'REG' and r.get('home_score') and r.get('away_score')
         ]
-        target_season = max(seasons_with_scores) if seasons_with_scores else 2026
+        if not seasons_with_scores:
+            raise RuntimeError("no completed REG-season games found in nflverse feed")
+        target_season = max(seasons_with_scores)
         print(f"Targeting active NFL season: {target_season}")
 
         # 2. 해당 최신 시즌의 경기만 집계
@@ -72,7 +80,7 @@ def fetch_and_calculate_stats():
                 if row.get('home_score') and row.get('away_score'):
                     h_team = NAME_MAP.get(row['home_team'], row['home_team'])
                     a_team = NAME_MAP.get(row['away_team'], row['away_team'])
-                    
+
                     if h_team in team_stats and a_team in team_stats:
                         try:
                             h_score = int(float(row['home_score']))
@@ -98,24 +106,29 @@ def fetch_and_calculate_stats():
                             team_stats[a_team]['ties'] += 1
 
     except Exception as e:
+        # 원격 소스가 죽어도 job 자체는 실패시키지 않는다 — 이전 nfl_data.json이
+        # 남아있으면 그대로 유지되고, 없으면 gp=0 중립값(전 팀 50점)으로 생성된다.
         print(f"Warning: Remote fetch issue ({e})", file=sys.stderr)
 
-    # 3. 단일 시즌 성적 기반 지표 정규화
+    # 3. 표본 수 축소(shrinkage) 적용 정규화
     teams_output = []
+    K = SHRINKAGE_GAMES
     for tid, meta in TEAM_METADATA.items():
         st = team_stats[tid]
         gp = st['games_played']
         w, l, t = st['wins'], st['losses'], st['ties']
-        
-        record_str = f"{w}-{l}" + (f"-{t}" if t > 0 else "") if gp > 0 else "0-0"
-        win_rate = (w + 0.5 * t) / gp if gp > 0 else 0.5
-        pt_diff = (st['points_for'] - st['points_against']) / gp if gp > 0 else 0
 
-        # 단일 시즌 기준 정규화 점수 도출
-        norm_elo = round(max(30, min(99, 50 + (win_rate * 35) + (pt_diff * 1.5))), 1)
-        norm_epa = round(max(25, min(99, 50 + (win_rate * 25) + (pt_diff * 2.0))), 1)
-        norm_sr = round(max(30, min(98, 50 + (win_rate * 45))), 1)
-        norm_rec = round(max(25, min(99, norm_elo + (pt_diff * 0.8))), 1)
+        record_str = f"{w}-{l}" + (f"-{t}" if t > 0 else "") if gp > 0 else "0-0"
+
+        # 중립 사전분포(승률 0.5, 득실차 0)를 K경기 분량으로 섞는다.
+        # gp=0이면 그대로 0.5/0 — gp가 커질수록 실제 성적 비중이 지배적이 됨.
+        adj_win_rate = (w + 0.5 * t + 0.5 * K) / (gp + K)
+        adj_pt_diff = (st['points_for'] - st['points_against']) / (gp + K)
+
+        norm_elo = round(max(30, min(99, 50 + (adj_win_rate - 0.5) * 70 + adj_pt_diff * 1.5)), 1)
+        norm_epa = round(max(25, min(99, 50 + (adj_win_rate - 0.5) * 50 + adj_pt_diff * 2.0)), 1)
+        norm_sr = round(max(30, min(98, 50 + (adj_win_rate - 0.5) * 90)), 1)
+        norm_rec = round(max(25, min(99, norm_elo + adj_pt_diff * 0.8)), 1)
 
         teams_output.append({
             "id": tid,
@@ -123,6 +136,7 @@ def fetch_and_calculate_stats():
             "conf": meta['conf'],
             "div": meta['div'],
             "record": record_str,
+            "gamesPlayed": gp,
             "logo": meta['logo'],
             "normElo": norm_elo,
             "normEpa": norm_epa,
@@ -139,7 +153,8 @@ def fetch_and_calculate_stats():
     with open("nfl_data.json", "w", encoding="utf-8") as f:
         json.dump(teams_output, f, ensure_ascii=False, indent=2)
 
-    print("Successfully generated single-season data.")
+    print(f"Successfully generated data for {len(teams_output)} teams (shrinkage K={K}).")
+
 
 if __name__ == "__main__":
     fetch_and_calculate_stats()
