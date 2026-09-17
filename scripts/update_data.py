@@ -3,13 +3,11 @@ import urllib.request
 import csv
 import io
 import sys
-import os
 
-# nflverse 공식 원격 경기 일정 및 스코어 데이터 (GitHub 러너 IP에서 차단 없음)
-# 2024~2025 최신 시즌 완료 데이터셋 (매주 화요일마다 nflverse 저장소에서 실시간 갱신됨)
+# nflverse 공식 원격 경기 일정 및 스코어 데이터
 NFLVERSE_GAMES_URL = "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv"
 
-# 32개 구단 마스터 메타데이터 (ESPN CDN 공식 로고 및 기본 디비전)
+# 32개 팀 메타데이터 (공식 로고 및 디비전)
 TEAM_METADATA = {
     'KC': {'name': 'Kansas City Chiefs', 'conf': 'AFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png'},
     'SF': {'name': 'San Francisco 49ers', 'conf': 'NFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png'},
@@ -45,11 +43,9 @@ TEAM_METADATA = {
     'CAR': {'name': 'Carolina Panthers', 'conf': 'NFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png'}
 }
 
-# nflverse와 매핑되는 팀 약어 표준화
 NAME_MAP = {'LA': 'LAR', 'OAK': 'LV', 'SD': 'LAC', 'STL': 'LAR'}
 
 def fetch_and_calculate_stats():
-    # 32개 팀 초기 통계 구조체
     team_stats = {
         tid: {'wins': 0, 'losses': 0, 'ties': 0, 'points_for': 0, 'points_against': 0, 'games_played': 0}
         for tid in TEAM_METADATA.keys()
@@ -60,43 +56,51 @@ def fetch_and_calculate_stats():
         with urllib.request.urlopen(req, timeout=25) as resp:
             csv_text = resp.read().decode('utf-8')
 
-        reader = csv.DictReader(io.StringIO(csv_text))
+        rows = list(csv.DictReader(io.StringIO(csv_text)))
         
-        # 경기 기록 파싱 및 집계
-        for row in reader:
-            # 정규시즌 경기 중 스코어가 입력된 완료 경기만 추출
-            if row.get('game_type') == 'REG' and row.get('home_score') and row.get('away_score'):
-                h_team = NAME_MAP.get(row['home_team'], row['home_team'])
-                a_team = NAME_MAP.get(row['away_team'], row['away_team'])
-                
-                if h_team in team_stats and a_team in team_stats:
-                    try:
-                        h_score = int(float(row['home_score']))
-                        a_score = int(float(row['away_score']))
-                    except ValueError:
-                        continue
+        # 1. 최신 정규시즌 연도(Season) 자동 탐색
+        seasons_with_scores = [
+            int(r['season']) for r in rows 
+            if r.get('game_type') == 'REG' and r.get('home_score') and r.get('away_score')
+        ]
+        target_season = max(seasons_with_scores) if seasons_with_scores else 2026
+        print(f"Targeting active NFL season: {target_season}")
 
-                    team_stats[h_team]['games_played'] += 1
-                    team_stats[a_team]['games_played'] += 1
-                    team_stats[h_team]['points_for'] += h_score
-                    team_stats[h_team]['points_against'] += a_score
-                    team_stats[a_team]['points_for'] += a_score
-                    team_stats[a_team]['points_against'] += h_score
+        # 2. 해당 최신 시즌의 경기만 집계
+        for row in rows:
+            if str(row.get('season')) == str(target_season) and row.get('game_type') == 'REG':
+                if row.get('home_score') and row.get('away_score'):
+                    h_team = NAME_MAP.get(row['home_team'], row['home_team'])
+                    a_team = NAME_MAP.get(row['away_team'], row['away_team'])
+                    
+                    if h_team in team_stats and a_team in team_stats:
+                        try:
+                            h_score = int(float(row['home_score']))
+                            a_score = int(float(row['away_score']))
+                        except ValueError:
+                            continue
 
-                    if h_score > a_score:
-                        team_stats[h_team]['wins'] += 1
-                        team_stats[a_team]['losses'] += 1
-                    elif a_score > h_score:
-                        team_stats[a_team]['wins'] += 1
-                        team_stats[h_team]['losses'] += 1
-                    else:
-                        team_stats[h_team]['ties'] += 1
-                        team_stats[a_team]['ties'] += 1
+                        team_stats[h_team]['games_played'] += 1
+                        team_stats[a_team]['games_played'] += 1
+                        team_stats[h_team]['points_for'] += h_score
+                        team_stats[h_team]['points_against'] += a_score
+                        team_stats[a_team]['points_for'] += a_score
+                        team_stats[a_team]['points_against'] += h_score
+
+                        if h_score > a_score:
+                            team_stats[h_team]['wins'] += 1
+                            team_stats[a_team]['losses'] += 1
+                        elif a_score > h_score:
+                            team_stats[a_team]['wins'] += 1
+                            team_stats[h_team]['losses'] += 1
+                        else:
+                            team_stats[h_team]['ties'] += 1
+                            team_stats[a_team]['ties'] += 1
 
     except Exception as e:
-        print(f"Warning: Remote fetch failed ({e}). Falling back to baseline simulation stats.")
+        print(f"Warning: Remote fetch issue ({e})", file=sys.stderr)
 
-    # 지표 정규화 및 점수 도출
+    # 3. 단일 시즌 성적 기반 지표 정규화
     teams_output = []
     for tid, meta in TEAM_METADATA.items():
         st = team_stats[tid]
@@ -107,11 +111,11 @@ def fetch_and_calculate_stats():
         win_rate = (w + 0.5 * t) / gp if gp > 0 else 0.5
         pt_diff = (st['points_for'] - st['points_against']) / gp if gp > 0 else 0
 
-        # 지표 연산 (0~100 정규화 스케일 환산)
-        norm_elo = round(max(40, min(99, 50 + (win_rate * 45) + (pt_diff * 0.5))), 1)
-        norm_epa = round(max(35, min(98, 50 + (win_rate * 30) + (pt_diff * 0.8))), 1)
-        norm_sr = round(max(40, min(96, 50 + (win_rate * 40))), 1)
-        norm_rec = round(max(30, min(99, norm_elo + (pt_diff * 0.3))), 1)
+        # 단일 시즌 기준 정규화 점수 도출
+        norm_elo = round(max(30, min(99, 50 + (win_rate * 35) + (pt_diff * 1.5))), 1)
+        norm_epa = round(max(25, min(99, 50 + (win_rate * 25) + (pt_diff * 2.0))), 1)
+        norm_sr = round(max(30, min(98, 50 + (win_rate * 45))), 1)
+        norm_rec = round(max(25, min(99, norm_elo + (pt_diff * 0.8))), 1)
 
         teams_output.append({
             "id": tid,
@@ -127,16 +131,15 @@ def fetch_and_calculate_stats():
             "prevRank": 16
         })
 
-    # Elo 기준 기본 정렬 후 이전 순위 인덱싱
+    # 정렬 및 전주 순위 매핑
     teams_output.sort(key=lambda x: x['normElo'], reverse=True)
     for idx, tm in enumerate(teams_output):
         tm['prevRank'] = idx + 1
 
-    output_path = "nfl_data.json"
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open("nfl_data.json", "w", encoding="utf-8") as f:
         json.dump(teams_output, f, ensure_ascii=False, indent=2)
 
-    print(f"Successfully processed and generated {output_path} with {len(teams_output)} teams.")
+    print("Successfully generated single-season data.")
 
 if __name__ == "__main__":
     fetch_and_calculate_stats()
