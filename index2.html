@@ -24,43 +24,7 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useMemo } = React;
-
-    // NFL 32개 팀 정규화 데이터 (0~100 스케일 정규화 완료)
-    const NFL_32_TEAMS = [
-      { id: 'KC', name: 'Kansas City Chiefs', conf: 'AFC', div: 'West', record: '1-0', normElo: 97, normEpa: 93, normSr: 90, normRecency: 95, prevRank: 1, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png' },
-      { id: 'SF', name: 'San Francisco 49ers', conf: 'NFC', div: 'West', record: '1-0', normElo: 93, normEpa: 90, normSr: 94, normRecency: 88, prevRank: 2, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png' },
-      { id: 'BAL', name: 'Baltimore Ravens', conf: 'AFC', div: 'North', record: '0-1', normElo: 90, normEpa: 92, normSr: 86, normRecency: 84, prevRank: 3, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/bal.png' },
-      { id: 'DET', name: 'Detroit Lions', conf: 'NFC', div: 'North', record: '1-0', normElo: 91, normEpa: 88, normSr: 91, normRecency: 89, prevRank: 4, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/det.png' },
-      { id: 'BUF', name: 'Buffalo Bills', conf: 'AFC', div: 'East', record: '1-0', normElo: 89, normEpa: 91, normSr: 85, normRecency: 86, prevRank: 5, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png' },
-      { id: 'PHI', name: 'Philadelphia Eagles', conf: 'NFC', div: 'East', record: '1-0', normElo: 86, normEpa: 83, normSr: 84, normRecency: 82, prevRank: 6, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png' },
-      { id: 'HOU', name: 'Houston Texans', conf: 'AFC', div: 'South', record: '1-0', normElo: 85, normEpa: 82, normSr: 83, normRecency: 85, prevRank: 7, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/hou.png' },
-      { id: 'DAL', name: 'Dallas Cowboys', conf: 'NFC', div: 'East', record: '1-0', normElo: 84, normEpa: 79, normSr: 78, normRecency: 84, prevRank: 8, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/dal.png' },
-      { id: 'GB', name: 'Green Bay Packers', conf: 'NFC', div: 'North', record: '0-1', normElo: 82, normEpa: 81, normSr: 79, normRecency: 76, prevRank: 9, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/gb.png' },
-      { id: 'MIA', name: 'Miami Dolphins', conf: 'AFC', div: 'East', record: '1-0', normElo: 81, normEpa: 77, normSr: 80, normRecency: 78, prevRank: 10, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/mia.png' },
-      { id: 'LAR', name: 'Los Angeles Rams', conf: 'NFC', div: 'West', record: '0-1', normElo: 80, normEpa: 78, normSr: 79, normRecency: 77, prevRank: 11, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png' },
-      { id: 'CIN', name: 'Cincinnati Bengals', conf: 'AFC', div: 'North', record: '0-1', normElo: 78, normEpa: 74, normSr: 73, normRecency: 69, prevRank: 12, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/cin.png' },
-      { id: 'PIT', name: 'Pittsburgh Steelers', conf: 'AFC', div: 'North', record: '1-0', normElo: 79, normEpa: 71, normSr: 72, normRecency: 82, prevRank: 14, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png' },
-      { id: 'NYJ', name: 'New York Jets', conf: 'AFC', div: 'East', record: '0-1', normElo: 77, normEpa: 72, normSr: 74, normRecency: 71, prevRank: 13, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png' },
-      { id: 'TB', name: 'Tampa Bay Buccaneers', conf: 'NFC', div: 'South', record: '1-0', normElo: 76, normEpa: 79, normSr: 75, normRecency: 80, prevRank: 16, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/tb.png' },
-      { id: 'CHI', name: 'Chicago Bears', conf: 'NFC', div: 'North', record: '1-0', normElo: 74, normEpa: 65, normSr: 68, normRecency: 77, prevRank: 17, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/chi.png' },
-      { id: 'SEA', name: 'Seattle Seahawks', conf: 'NFC', div: 'West', record: '1-0', normElo: 75, normEpa: 72, normSr: 74, normRecency: 76, prevRank: 18, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png' },
-      { id: 'JAX', name: 'Jacksonville Jaguars', conf: 'AFC', div: 'South', record: '0-1', normElo: 74, normEpa: 70, normSr: 71, normRecency: 70, prevRank: 15, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/jax.png' },
-      { id: 'CLE', name: 'Cleveland Browns', conf: 'AFC', div: 'North', record: '0-1', normElo: 73, normEpa: 62, normSr: 66, normRecency: 65, prevRank: 19, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/cle.png' },
-      { id: 'IND', name: 'Indianapolis Colts', conf: 'AFC', div: 'South', record: '0-1', normElo: 72, normEpa: 73, normSr: 72, normRecency: 71, prevRank: 20, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/ind.png' },
-      { id: 'ATL', name: 'Atlanta Falcons', conf: 'NFC', div: 'South', record: '0-1', normElo: 71, normEpa: 64, normSr: 67, normRecency: 68, prevRank: 21, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png' },
-      { id: 'NO', name: 'New Orleans Saints', conf: 'NFC', div: 'South', record: '1-0', normElo: 70, normEpa: 82, normSr: 77, normRecency: 85, prevRank: 25, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png' },
-      { id: 'MIN', name: 'Minnesota Vikings', conf: 'NFC', div: 'North', record: '1-0', normElo: 69, normEpa: 75, normSr: 74, normRecency: 78, prevRank: 24, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/min.png' },
-      { id: 'LAC', name: 'Los Angeles Chargers', conf: 'AFC', div: 'West', record: '1-0', normElo: 70, normEpa: 69, normSr: 70, normRecency: 75, prevRank: 23, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/lac.png' },
-      { id: 'ARI', name: 'Arizona Cardinals', conf: 'NFC', div: 'West', record: '0-1', normElo: 66, normEpa: 71, normSr: 69, normRecency: 68, prevRank: 22, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png' },
-      { id: 'LV', name: 'Las Vegas Raiders', conf: 'AFC', div: 'West', record: '0-1', normElo: 65, normEpa: 62, normSr: 64, normRecency: 64, prevRank: 26, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png' },
-      { id: 'TEN', name: 'Tennessee Titans', conf: 'AFC', div: 'South', record: '0-1', normElo: 64, normEpa: 60, normSr: 63, normRecency: 62, prevRank: 27, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/ten.png' },
-      { id: 'WAS', name: 'Washington Commanders', conf: 'NFC', div: 'East', record: '0-1', normElo: 63, normEpa: 61, normSr: 62, normRecency: 61, prevRank: 28, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/was.png' },
-      { id: 'DEN', name: 'Denver Broncos', conf: 'AFC', div: 'West', record: '0-1', normElo: 62, normEpa: 58, normSr: 60, normRecency: 60, prevRank: 29, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/den.png' },
-      { id: 'NYG', name: 'New York Giants', conf: 'NFC', div: 'East', record: '0-1', normElo: 60, normEpa: 52, normSr: 55, normRecency: 53, prevRank: 30, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png' },
-      { id: 'NE', name: 'New England Patriots', conf: 'AFC', div: 'East', record: '1-0', normElo: 61, normEpa: 55, normSr: 58, normRecency: 66, prevRank: 32, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/ne.png' },
-      { id: 'CAR', name: 'Carolina Panthers', conf: 'NFC', div: 'South', record: '0-1', normElo: 55, normEpa: 45, normSr: 48, normRecency: 44, prevRank: 31, logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png' },
-    ];
+    const { useState, useEffect, useMemo } = React;
 
     const getTierBadge = (score) => {
       if (score >= 88) return { label: 'Tier S (Contender)', color: 'bg-amber-500/20 text-amber-300 border-amber-500/40' };
@@ -71,7 +35,10 @@
     };
 
     function App() {
-      // 가중치 상태 관리
+      const [teamsData, setTeamsData] = useState([]);
+      const [loading, setLoading] = useState(true);
+
+      // 가중치 기본값
       const [weights, setWeights] = useState({
         elo: 40,
         epa: 30,
@@ -79,12 +46,26 @@
         recency: 15,
       });
 
-      // 검색어 및 컨퍼런스 필터 상태
       const [searchTerm, setSearchTerm] = useState('');
-      const [confFilter, setConfFilter] = useState('ALL'); // ALL, AFC, NFC
       const [copied, setCopied] = useState(false);
 
-      // 프리셋 적용
+      // GitHub Actions가 매일 생성하는 nfl_data.json 자동 호출
+      useEffect(() => {
+        fetch('./nfl_data.json')
+          .then((res) => {
+            if (!res.ok) throw new Error('Network error');
+            return res.json();
+          })
+          .then((data) => {
+            setTeamsData(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error("데이터 로드 오류:", err);
+            setLoading(false);
+          });
+      }, []);
+
       const applyPreset = (type) => {
         if (type === 'analytics') setWeights({ elo: 15, epa: 55, successRate: 20, recency: 10 });
         if (type === 'traditional') setWeights({ elo: 60, epa: 15, successRate: 10, recency: 15 });
@@ -92,15 +73,17 @@
         if (type === 'default') setWeights({ elo: 40, epa: 30, successRate: 15, recency: 15 });
       };
 
-      // 32개 팀 전체 순위 계산
-      const rankedAllTeams = useMemo(() => {
+      // 실시간 가중치 랭킹 계산
+      const rankedTeams = useMemo(() => {
+        if (!teamsData || teamsData.length === 0) return [];
+
         const total = weights.elo + weights.epa + weights.successRate + weights.recency || 1;
         const wElo = weights.elo / total;
         const wEpa = weights.epa / total;
         const wSr = weights.successRate / total;
         const wRec = weights.recency / total;
 
-        const calculated = NFL_32_TEAMS.map((team) => {
+        const calculated = teamsData.map((team) => {
           const score = (team.normElo * wElo) + (team.normEpa * wEpa) + (team.normSr * wSr) + (team.normRecency * wRec);
           return {
             ...team,
@@ -116,26 +99,30 @@
           const delta = team.prevRank - rank;
           return { ...team, rank, delta };
         });
-      }, [weights]);
+      }, [teamsData, weights]);
 
-      // 필터링된 팀 목록
       const displayedTeams = useMemo(() => {
-        return rankedAllTeams.filter((team) => {
-          const matchConf = confFilter === 'ALL' || team.conf === confFilter;
-          const matchSearch = team.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                              team.id.toLowerCase().includes(searchTerm.toLowerCase());
-          return matchConf && matchSearch;
-        });
-      }, [rankedAllTeams, confFilter, searchTerm]);
+        return rankedTeams.filter((team) =>
+          team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          team.id.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }, [rankedTeams, searchTerm]);
 
-      // 바이럴 공유 클립보드 복사
       const handleShare = () => {
-        const top5 = rankedAllTeams.slice(0, 5).map((t, i) => `${i+1}. ${t.name} (${t.dpsScore}점)`).join('\n');
-        const text = `⚡ My Custom NFL Power Ranking:\n${top5}\n\n[Weight Setup] Elo: ${weights.elo}%, EPA: ${weights.epa}%, SR: ${weights.successRate}%, Recent: ${weights.recency}%\nMake yours at https://tju2009g.github.io/nflpower/`;
+        const top5 = rankedTeams.slice(0, 5).map((t, i) => `${i+1}. ${t.name} (${t.dpsScore}점)`).join('\n');
+        const text = `⚡ My Custom NFL Power Ranking:\n${top5}\n\nMake yours at https://tju2009g.github.io/nflpower/index2.html`;
         navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 2500);
       };
+
+      if (loading) {
+        return (
+          <div className="flex items-center justify-center min-h-screen text-slate-400">
+            <div className="animate-spin mr-3 text-emerald-400">⚡</div> 최신 NFL 데이터 불러오는 중...
+          </div>
+        );
+      }
 
       return (
         <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
@@ -143,26 +130,24 @@
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
             <div>
               <div className="flex items-center gap-2">
-                <span className="bg-emerald-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded">2026 Season</span>
+                <span className="bg-emerald-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded">Auto Updated</span>
                 <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
                   NFL DYNAMIC POWER RANKINGS
                 </h1>
               </div>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Elo 승패 레이팅 + EPA/Play + 일관성 지표를 결합한 실시간 커스텀 순위 분석기
+                매일 자동 갱신되는 정규화 지표 기반 실시간 커스텀 파워 랭킹
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <button onClick={handleShare} className="px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors flex items-center gap-1.5 shadow-md">
-                <span>{copied ? '✅ 복사 완료!' : '📢 내 랭킹 공유하기'}</span>
-              </button>
-            </div>
+            <button onClick={handleShare} className="px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors flex items-center gap-1.5 shadow-md self-start md:self-auto">
+              <span>{copied ? '✅ 복사 완료!' : '📢 내 랭킹 공유하기'}</span>
+            </button>
           </header>
 
           {/* Preset Buttons & Weight Sliders */}
           <section className="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-5 shadow-xl space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">지표 가중치 엔진 (Weights)</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">가중치 엔진</span>
               <div className="flex flex-wrap gap-1.5">
                 <button onClick={() => applyPreset('default')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded">기본값</button>
                 <button onClick={() => applyPreset('analytics')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded">EPA 효율 중심</button>
@@ -174,7 +159,7 @@
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1">
               <div>
                 <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Elo Rating (전력/승패)</span>
+                  <span className="text-slate-300">Elo Rating</span>
                   <span className="text-emerald-400 font-mono font-bold">{weights.elo}%</span>
                 </div>
                 <input type="range" min="0" max="100" value={weights.elo}
@@ -183,7 +168,7 @@
               </div>
               <div>
                 <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Net EPA/Play (드라이브 효율)</span>
+                  <span className="text-slate-300">Net EPA/Play</span>
                   <span className="text-cyan-400 font-mono font-bold">{weights.epa}%</span>
                 </div>
                 <input type="range" min="0" max="100" value={weights.epa}
@@ -192,7 +177,7 @@
               </div>
               <div>
                 <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Success Rate (플레이 일관성)</span>
+                  <span className="text-slate-300">Success Rate</span>
                   <span className="text-indigo-400 font-mono font-bold">{weights.successRate}%</span>
                 </div>
                 <input type="range" min="0" max="100" value={weights.successRate}
@@ -201,7 +186,7 @@
               </div>
               <div>
                 <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Recent Margin (최근 모멘텀)</span>
+                  <span className="text-slate-300">Recent Margin</span>
                   <span className="text-amber-400 font-mono font-bold">{weights.recency}%</span>
                 </div>
                 <input type="range" min="0" max="100" value={weights.recency}
@@ -211,33 +196,18 @@
             </div>
           </section>
 
-          {/* Search & Conference Filter Tabs */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-            <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800 w-fit">
-              {['ALL', 'AFC', 'NFC'].map((conf) => (
-                <button
-                  key={conf}
-                  onClick={() => setConfFilter(conf)}
-                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-colors ${
-                    confFilter === conf ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {conf}
-                </button>
-              ))}
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="팀명 검색 (예: Chiefs, KC)..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full sm:w-64 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-              />
-            </div>
+          {/* Search Box */}
+          <div className="flex justify-end">
+            <input
+              type="text"
+              placeholder="팀명 검색 (예: Chiefs, KC)..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-64 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+            />
           </div>
 
-          {/* 32 Teams Ranking Table */}
+          {/* Table */}
           <section className="bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -245,7 +215,6 @@
                   <tr className="border-b border-slate-800 bg-slate-950/70 text-xs text-slate-400 uppercase tracking-wider">
                     <th className="p-3.5 pl-5">순위</th>
                     <th className="p-3.5">팀</th>
-                    <th className="p-3.5 text-center">컨퍼런스</th>
                     <th className="p-3.5 text-right">DPS 종합점수</th>
                     <th className="p-3.5 text-center">전력 티어</th>
                   </tr>
@@ -267,9 +236,6 @@
                             <div className="font-bold text-white text-sm leading-snug">{team.name}</div>
                             <div className="text-xs text-slate-500 font-mono">{team.record}</div>
                           </div>
-                        </td>
-                        <td className="p-3.5 text-center text-xs text-slate-400 font-semibold">
-                          {team.conf} {team.div}
                         </td>
                         <td className="p-3.5 text-right font-mono font-black text-emerald-400 text-base">
                           {team.dpsScore}
