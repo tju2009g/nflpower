@@ -1,105 +1,52 @@
 import json
-import urllib.request
-import sys
 import os
+import sys
 
-# GitHub Actions 환경에서 403 차단이 없는 nflverse 공개 정적 데이터 소스
-NFLVERSE_STANDINGS_URL = "https://raw.githubusercontent.com/nflverse/nfldata/master/data/standings.json"
+# NFL 32개 구단 공식 메타데이터 (ESPN 공식 CDN 로고 연동)
+TEAMS = [
+    {"id": "KC", "name": "Kansas City Chiefs", "conf": "AFC", "div": "West", "record": "1-0", "normElo": 97, "normEpa": 93, "normSr": 90, "normRecency": 95, "prevRank": 1, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"},
+    {"id": "SF", "name": "San Francisco 49ers", "conf": "NFC", "div": "West", "record": "1-0", "normElo": 93, "normEpa": 90, "normSr": 94, "normRecency": 88, "prevRank": 2, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"},
+    {"id": "BAL", "name": "Baltimore Ravens", "conf": "AFC", "div": "North", "record": "0-1", "normElo": 90, "normEpa": 92, "normSr": 86, "normRecency": 84, "prevRank": 3, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"},
+    {"id": "DET", "name": "Detroit Lions", "conf": "NFC", "div": "North", "record": "1-0", "normElo": 91, "normEpa": 88, "normSr": 91, "normRecency": 89, "prevRank": 4, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png"},
+    {"id": "BUF", "name": "Buffalo Bills", "conf": "AFC", "div": "East", "record": "1-0", "normElo": 89, "normEpa": 91, "normSr": 85, "normRecency": 86, "prevRank": 5, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"},
+    {"id": "PHI", "name": "Philadelphia Eagles", "conf": "NFC", "div": "East", "record": "1-0", "normElo": 86, "normEpa": 83, "normSr": 84, "normRecency": 82, "prevRank": 6, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"},
+    {"id": "HOU", "name": "Houston Texans", "conf": "AFC", "div": "South", "record": "1-0", "normElo": 85, "normEpa": 82, "normSr": 83, "normRecency": 85, "prevRank": 7, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"},
+    {"id": "DAL", "name": "Dallas Cowboys", "conf": "NFC", "div": "East", "record": "1-0", "normElo": 84, "normEpa": 79, "normSr": 78, "normRecency": 84, "prevRank": 8, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"},
+    {"id": "GB", "name": "Green Bay Packers", "conf": "NFC", "div": "North", "record": "0-1", "normElo": 82, "normEpa": 81, "normSr": 79, "normRecency": 76, "prevRank": 9, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png"},
+    {"id": "MIA", "name": "Miami Dolphins", "conf": "AFC", "div": "East", "record": "1-0", "normElo": 81, "normEpa": 77, "normSr": 80, "normRecency": 78, "prevRank": 10, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"},
+    {"id": "LAR", "name": "Los Angeles Rams", "conf": "NFC", "div": "West", "record": "0-1", "normElo": 80, "normEpa": 78, "normSr": 79, "normRecency": 77, "prevRank": 11, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"},
+    {"id": "CIN", "name": "Cincinnati Bengals", "conf": "AFC", "div": "North", "record": "0-1", "normElo": 78, "normEpa": 74, "normSr": 73, "normRecency": 69, "prevRank": 12, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"},
+    {"id": "PIT", "name": "Pittsburgh Steelers", "conf": "AFC", "div": "North", "record": "1-0", "normElo": 79, "normEpa": 71, "normSr": 72, "normRecency": 82, "prevRank": 14, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"},
+    {"id": "NYJ", "name": "New York Jets", "conf": "AFC", "div": "East", "record": "0-1", "normElo": 77, "normEpa": 72, "normSr": 74, "normRecency": 71, "prevRank": 13, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"},
+    {"id": "TB", "name": "Tampa Bay Buccaneers", "conf": "NFC", "div": "South", "record": "1-0", "normElo": 76, "normEpa": 79, "normSr": 75, "normRecency": 80, "prevRank": 16, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png"},
+    {"id": "CHI", "name": "Chicago Bears", "conf": "NFC", "div": "North", "record": "1-0", "normElo": 74, "normEpa": 65, "normSr": 68, "normRecency": 77, "prevRank": 17, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"},
+    {"id": "SEA", "name": "Seattle Seahawks", "conf": "NFC", "div": "West", "record": "1-0", "normElo": 75, "normEpa": 72, "normSr": 74, "normRecency": 76, "prevRank": 18, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"},
+    {"id": "JAX", "name": "Jacksonville Jaguars", "conf": "AFC", "div": "South", "record": "0-1", "normElo": 74, "normEpa": 70, "normSr": 71, "normRecency": 70, "prevRank": 15, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png"},
+    {"id": "CLE", "name": "Cleveland Browns", "conf": "AFC", "div": "North", "record": "0-1", "normElo": 73, "normEpa": 62, "normSr": 66, "normRecency": 65, "prevRank": 19, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png"},
+    {"id": "IND", "name": "Indianapolis Colts", "conf": "AFC", "div": "South", "record": "0-1", "normElo": 72, "normEpa": 73, "normSr": 72, "normRecency": 71, "prevRank": 20, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"},
+    {"id": "ATL", "name": "Atlanta Falcons", "conf": "NFC", "div": "South", "record": "0-1", "normElo": 71, "normEpa": 64, "normSr": 67, "normRecency": 68, "prevRank": 21, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"},
+    {"id": "NO", "name": "New Orleans Saints", "conf": "NFC", "div": "South", "record": "1-0", "normElo": 70, "normEpa": 82, "normSr": 77, "normRecency": 85, "prevRank": 25, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png"},
+    {"id": "MIN", "name": "Minnesota Vikings", "conf": "NFC", "div": "North", "record": "1-0", "normElo": 69, "normEpa": 75, "normSr": 74, "normRecency": 78, "prevRank": 24, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"},
+    {"id": "LAC", "name": "Los Angeles Chargers", "conf": "AFC", "div": "West", "record": "1-0", "normElo": 70, "normEpa": 69, "normSr": 70, "normRecency": 75, "prevRank": 23, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"},
+    {"id": "ARI", "name": "Arizona Cardinals", "conf": "NFC", "div": "West", "record": "0-1", "normElo": 66, "normEpa": 71, "normSr": 69, "normRecency": 68, "prevRank": 22, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"},
+    {"id": "LV", "name": "Las Vegas Raiders", "conf": "AFC", "div": "West", "record": "0-1", "normElo": 65, "normEpa": 62, "normSr": 64, "normRecency": 64, "prevRank": 26, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png"},
+    {"id": "TEN", "name": "Tennessee Titans", "conf": "AFC", "div": "South", "record": "0-1", "normElo": 64, "normEpa": 60, "normSr": 63, "normRecency": 62, "prevRank": 27, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"},
+    {"id": "WAS", "name": "Washington Commanders", "conf": "NFC", "div": "East", "record": "0-1", "normElo": 63, "normEpa": 61, "normSr": 62, "normRecency": 61, "prevRank": 28, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/was.png"},
+    {"id": "DEN", "name": "Denver Broncos", "conf": "AFC", "div": "West", "record": "0-1", "normElo": 62, "normEpa": 58, "normSr": 60, "normRecency": 60, "prevRank": 29, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"},
+    {"id": "NYG", "name": "New York Giants", "conf": "NFC", "div": "East", "record": "0-1", "normElo": 60, "normEpa": 52, "normSr": 55, "normRecency": 53, "prevRank": 30, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"},
+    {"id": "NE", "name": "New England Patriots", "conf": "AFC", "div": "East", "record": "1-0", "normElo": 61, "normEpa": 55, "normSr": 58, "normRecency": 66, "prevRank": 32, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"},
+    {"id": "CAR", "name": "Carolina Panthers", "conf": "NFC", "div": "South", "record": "0-1", "normElo": 55, "normEpa": 45, "normSr": 48, "normRecency": 44, "prevRank": 31, "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"}
+]
 
-# ESPN CDN 팀 로고 매핑 테이블
-TEAM_METADATA = {
-    'KC': {'name': 'Kansas City Chiefs', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png'},
-    'SF': {'name': 'San Francisco 49ers', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png'},
-    'BAL': {'name': 'Baltimore Ravens', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/bal.png'},
-    'DET': {'name': 'Detroit Lions', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/det.png'},
-    'BUF': {'name': 'Buffalo Bills', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png'},
-    'PHI': {'name': 'Philadelphia Eagles', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png'},
-    'HOU': {'name': 'Houston Texans', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/hou.png'},
-    'DAL': {'name': 'Dallas Cowboys', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/dal.png'},
-    'GB': {'name': 'Green Bay Packers', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/gb.png'},
-    'MIA': {'name': 'Miami Dolphins', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/mia.png'},
-    'LAR': {'name': 'Los Angeles Rams', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png'},
-    'CIN': {'name': 'Cincinnati Bengals', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/cin.png'},
-    'PIT': {'name': 'Pittsburgh Steelers', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png'},
-    'NYJ': {'name': 'New York Jets', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png'},
-    'TB': {'name': 'Tampa Bay Buccaneers', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/tb.png'},
-    'CHI': {'name': 'Chicago Bears', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/chi.png'},
-    'SEA': {'name': 'Seattle Seahawks', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png'},
-    'JAX': {'name': 'Jacksonville Jaguars', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/jax.png'},
-    'CLE': {'name': 'Cleveland Browns', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/cle.png'},
-    'IND': {'name': 'Indianapolis Colts', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ind.png'},
-    'ATL': {'name': 'Atlanta Falcons', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png'},
-    'NO': {'name': 'New Orleans Saints', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png'},
-    'MIN': {'name': 'Minnesota Vikings', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/min.png'},
-    'LAC': {'name': 'Los Angeles Chargers', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lac.png'},
-    'ARI': {'name': 'Arizona Cardinals', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png'},
-    'LV': {'name': 'Las Vegas Raiders', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png'},
-    'TEN': {'name': 'Tennessee Titans', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ten.png'},
-    'WAS': {'name': 'Washington Commanders', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/was.png'},
-    'DEN': {'name': 'Denver Broncos', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/den.png'},
-    'NYG': {'name': 'New York Giants', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png'},
-    'NE': {'name': 'New England Patriots', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ne.png'},
-    'CAR': {'name': 'Carolina Panthers', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png'},
-}
-
-def generate_nfl_data():
-    teams_list = []
-    
-    # 기본 32개 팀 데이터베이스 구성
-    base_stats = [
-        ('KC', '1-0', 97, 93, 90, 95, 1),
-        ('SF', '1-0', 93, 90, 94, 88, 2),
-        ('BAL', '0-1', 90, 92, 86, 84, 3),
-        ('DET', '1-0', 91, 88, 91, 89, 4),
-        ('BUF', '1-0', 89, 91, 85, 86, 5),
-        ('PHI', '1-0', 86, 83, 84, 82, 6),
-        ('HOU', '1-0', 85, 82, 83, 85, 7),
-        ('DAL', '1-0', 84, 79, 78, 84, 8),
-        ('GB', '0-1', 82, 81, 79, 76, 9),
-        ('MIA', '1-0', 81, 77, 80, 78, 10),
-        ('LAR', '0-1', 80, 78, 79, 77, 11),
-        ('CIN', '0-1', 78, 74, 73, 69, 12),
-        ('PIT', '1-0', 79, 71, 72, 82, 14),
-        ('NYJ', '0-1', 77, 72, 74, 71, 13),
-        ('TB', '1-0', 76, 79, 75, 80, 16),
-        ('CHI', '1-0', 74, 65, 68, 77, 17),
-        ('SEA', '1-0', 75, 72, 74, 76, 18),
-        ('JAX', '0-1', 74, 70, 71, 70, 15),
-        ('CLE', '0-1', 73, 62, 66, 65, 19),
-        ('IND', '0-1', 72, 73, 72, 71, 20),
-        ('ATL', '0-1', 71, 64, 67, 68, 21),
-        ('NO', '1-0', 70, 82, 77, 85, 25),
-        ('MIN', '1-0', 69, 75, 74, 78, 24),
-        ('LAC', '1-0', 70, 69, 70, 75, 23),
-        ('ARI', '0-1', 66, 71, 69, 68, 22),
-        ('LV', '0-1', 65, 62, 64, 64, 26),
-        ('TEN', '0-1', 64, 60, 63, 62, 27),
-        ('WAS', '0-1', 63, 61, 62, 61, 28),
-        ('DEN', '0-1', 62, 58, 60, 60, 29),
-        ('NYG', '0-1', 60, 52, 55, 53, 30),
-        ('NE', '1-0', 61, 55, 58, 66, 32),
-        ('CAR', '0-1', 55, 45, 48, 44, 31)
-    ]
-
-    for team_id, record, elo, epa, sr, rec, prev in base_stats:
-        meta = TEAM_METADATA.get(team_id, {'name': team_id, 'logo': ''})
-        teams_list.append({
-            "id": team_id,
-            "name": meta['name'],
-            "record": record,
-            "logo": meta['logo'],
-            "normElo": elo,
-            "normEpa": epa,
-            "normSr": sr,
-            "normRecency": rec,
-            "prevRank": prev
-        })
-
-    output_path = "nfl_data.json"
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(teams_list, f, ensure_ascii=False, indent=2)
-    
-    print(f"Successfully generated {output_path} with {len(teams_list)} teams.")
+def main():
+    try:
+        output_file = "nfl_data.json"
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(TEAMS, f, ensure_ascii=False, indent=2)
+        print(f"Success: {len(TEAMS)} teams written to {output_file}")
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__":
-    generate_nfl_data()
+    main()
