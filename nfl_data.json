@@ -9,13 +9,14 @@
     "sos": 0.523,
     "preseasonRank": 1,
     "ptDiffAvg": 3.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+    "colorPrimary": "#002244",
+    "colorSecondary": "#69BE28",
     "normElo": 72.6,
     "normEpa": 67.0,
     "normSr": 77.0,
     "normRecency": 73.2,
     "prevRank": 1,
-    "blurb": "1-0 record, averaging +3.0 pts/game. Has faced an average-strength schedule, roughly in line with the preseason #1 projection at #1."
+    "blurb": "1-0 기록, 평균 +3.0점차. 평이한 강도의 일정을 치렀고, 프리시즌 1위 예상과 대체로 부합하는 1위."
   },
   {
     "id": "CHI",
@@ -27,13 +28,14 @@
     "sos": 0.342,
     "preseasonRank": 6,
     "ptDiffAvg": 22.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+    "colorPrimary": "#0B162A",
+    "colorSecondary": "#C83803",
     "normElo": 71.6,
     "normEpa": 69.6,
     "normSr": 71.2,
     "normRecency": 76.0,
     "prevRank": 2,
-    "blurb": "1-0 record, averaging +22.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #6 projection at #2."
+    "blurb": "1-0 기록, 평균 +22.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 6위 예상과 대체로 부합하는 2위."
   },
   {
     "id": "BUF",
@@ -45,13 +47,14 @@
     "sos": 0.574,
     "preseasonRank": 5,
     "ptDiffAvg": 5.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+    "colorPrimary": "#00338D",
+    "colorSecondary": "#C60C30",
     "normElo": 70.7,
     "normEpa": 66.4,
     "normSr": 72.4,
     "normRecency": 71.7,
     "prevRank": 3,
-    "blurb": "1-0 record, averaging +5.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #5 projection at #3."
+    "blurb": "1-0 기록, 평균 +5.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 5위 예상과 대체로 부합하는 3위."
   },
   {
     "id": "KC",
@@ -63,13 +66,14 @@
     "sos": 0.561,
     "preseasonRank": 13,
     "ptDiffAvg": 21.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+    "colorPrimary": "#E31837",
+    "colorSecondary": "#FFB81C",
     "normElo": 69.3,
     "normEpa": 69.0,
     "normSr": 63.1,
     "normRecency": 73.5,
     "prevRank": 4,
-    "blurb": "1-0 record, averaging +21.0 pts/game. Has faced a relatively tough schedule, far exceeding the preseason #13 projection, now ranked #4."
+    "blurb": "1-0 기록, 평균 +21.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 13위 예상을 크게 뛰어넘어 현재 4위."
   },
   {
     "id": "SF",
@@ -81,13 +85,14 @@
     "sos": 0.587,
     "preseasonRank": 15,
     "ptDiffAvg": 20.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+    "colorPrimary": "#AA0000",
+    "colorSecondary": "#B3995D",
     "normElo": 67.6,
     "normEpa": 67.7,
     "normSr": 60.7,
     "normRecency": 71.6,
     "prevRank": 5,
-    "blurb": "1-0 record, averaging +20.0 pts/game. Has faced a relatively tough schedule, far exceeding the preseason #15 projection, now ranked #5."
+    "blurb": "1-0 기록, 평균 +20.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 15위 예상을 크게 뛰어넘어 현재 5위."
   },
   {
     "id": "JAX",
@@ -99,13 +104,14 @@
     "sos": 0.213,
     "preseasonRank": 9,
     "ptDiffAvg": 24.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+    "colorPrimary": "#006778",
+    "colorSecondary": "#9F792C",
     "normElo": 67.0,
     "normEpa": 66.1,
     "normSr": 67.7,
     "normRecency": 71.8,
     "prevRank": 6,
-    "blurb": "1-0 record, averaging +24.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #9 projection at #6."
+    "blurb": "1-0 기록, 평균 +24.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 9위 예상과 대체로 부합하는 6위."
   },
   {
     "id": "BAL",
@@ -117,13 +123,14 @@
     "sos": 0.316,
     "preseasonRank": 10,
     "ptDiffAvg": 18.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+    "colorPrimary": "#241773",
+    "colorSecondary": "#9E7C0C",
     "normElo": 65.9,
     "normEpa": 64.5,
     "normSr": 66.5,
     "normRecency": 69.5,
     "prevRank": 7,
-    "blurb": "1-0 record, averaging +18.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #10 projection at #7."
+    "blurb": "1-0 기록, 평균 +18.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 10위 예상과 대체로 부합하는 7위."
   },
   {
     "id": "CIN",
@@ -135,13 +142,14 @@
     "sos": 0.329,
     "preseasonRank": 11,
     "ptDiffAvg": 6.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+    "colorPrimary": "#FB4F14",
+    "colorSecondary": "#000000",
     "normElo": 60.8,
     "normEpa": 58.1,
     "normSr": 65.4,
     "normRecency": 62.0,
     "prevRank": 8,
-    "blurb": "1-0 record, averaging +6.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #11 projection at #8."
+    "blurb": "1-0 기록, 평균 +6.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 11위 예상과 대체로 부합하는 8위."
   },
   {
     "id": "PHI",
@@ -153,13 +161,14 @@
     "sos": 0.265,
     "preseasonRank": 8,
     "ptDiffAvg": 2.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+    "colorPrimary": "#004C54",
+    "colorSecondary": "#A5ACAF",
     "normElo": 60.7,
     "normEpa": 56.8,
     "normSr": 68.9,
     "normRecency": 61.1,
     "prevRank": 9,
-    "blurb": "1-0 record, averaging +2.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #8 projection at #9."
+    "blurb": "1-0 기록, 평균 +2.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 8위 예상과 대체로 부합하는 9위."
   },
   {
     "id": "MIN",
@@ -171,13 +180,14 @@
     "sos": 0.406,
     "preseasonRank": 19,
     "ptDiffAvg": 17.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+    "colorPrimary": "#4F2683",
+    "colorSecondary": "#FFC62F",
     "normElo": 59.2,
     "normEpa": 60.0,
     "normSr": 56.1,
     "normRecency": 62.6,
     "prevRank": 10,
-    "blurb": "1-0 record, averaging +17.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #19 projection, now ranked #10."
+    "blurb": "1-0 기록, 평균 +17.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 19위 예상을 크게 뛰어넘어 현재 10위."
   },
   {
     "id": "HOU",
@@ -189,13 +199,14 @@
     "sos": 0.748,
     "preseasonRank": 3,
     "ptDiffAvg": -5.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+    "colorPrimary": "#03202F",
+    "colorSecondary": "#A71930",
     "normElo": 58.3,
     "normEpa": 56.2,
     "normSr": 56.7,
     "normRecency": 57.3,
     "prevRank": 11,
-    "blurb": "0-1 record, averaging -5.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #3 projection, now down at #11."
+    "blurb": "0-1 기록, 평균 -5.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 3위 기대에 못 미쳐 현재 11위로 처짐."
   },
   {
     "id": "NE",
@@ -207,13 +218,14 @@
     "sos": 0.8,
     "preseasonRank": 7,
     "ptDiffAvg": -3.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+    "colorPrimary": "#002244",
+    "colorSecondary": "#C60C30",
     "normElo": 56.5,
     "normEpa": 55.6,
     "normSr": 52.0,
     "normRecency": 55.9,
     "prevRank": 12,
-    "blurb": "0-1 record, averaging -3.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #7 projection, now down at #12."
+    "blurb": "0-1 기록, 평균 -3.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 7위 기대에 못 미쳐 현재 12위로 처짐."
   },
   {
     "id": "DET",
@@ -225,13 +237,14 @@
     "sos": 0.303,
     "preseasonRank": 14,
     "ptDiffAvg": 1.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+    "colorPrimary": "#0076B6",
+    "colorSecondary": "#B0B7BC",
     "normElo": 55.7,
     "normEpa": 53.2,
     "normSr": 61.9,
     "normRecency": 55.9,
     "prevRank": 13,
-    "blurb": "1-0 record, averaging +1.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #14 projection at #13."
+    "blurb": "1-0 기록, 평균 +1.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 14위 예상과 대체로 부합하는 13위."
   },
   {
     "id": "NYG",
@@ -243,13 +256,14 @@
     "sos": 0.394,
     "preseasonRank": 20,
     "ptDiffAvg": 8.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+    "colorPrimary": "#0B2265",
+    "colorSecondary": "#A71930",
     "normElo": 54.7,
     "normEpa": 54.6,
     "normSr": 54.9,
     "normRecency": 56.3,
     "prevRank": 14,
-    "blurb": "1-0 record, averaging +8.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #20 projection, now ranked #14."
+    "blurb": "1-0 기록, 평균 +8.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 20위 예상을 크게 뛰어넘어 현재 14위."
   },
   {
     "id": "PIT",
@@ -261,13 +275,14 @@
     "sos": 0.29,
     "preseasonRank": 18,
     "ptDiffAvg": 7.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+    "colorPrimary": "#000000",
+    "colorSecondary": "#FFB612",
     "normElo": 54.1,
     "normEpa": 53.3,
     "normSr": 57.3,
     "normRecency": 55.5,
     "prevRank": 15,
-    "blurb": "1-0 record, averaging +7.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #18 projection at #15."
+    "blurb": "1-0 기록, 평균 +7.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 18위 예상과 대체로 부합하는 15위."
   },
   {
     "id": "LAR",
@@ -279,13 +294,14 @@
     "sos": 0.619,
     "preseasonRank": 2,
     "ptDiffAvg": -20.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+    "colorPrimary": "#003594",
+    "colorSecondary": "#FFA300",
     "normElo": 51.0,
     "normEpa": 46.7,
     "normSr": 57.8,
     "normRecency": 47.0,
     "prevRank": 16,
-    "blurb": "0-1 record, averaging -20.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #2 projection, now down at #16."
+    "blurb": "0-1 기록, 평균 -20.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 2위 기대에 못 미쳐 현재 16위로 처짐."
   },
   {
     "id": "DEN",
@@ -297,13 +313,14 @@
     "sos": 0.645,
     "preseasonRank": 4,
     "ptDiffAvg": -21.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+    "colorPrimary": "#002244",
+    "colorSecondary": "#FB4F14",
     "normElo": 49.3,
     "normEpa": 45.5,
     "normSr": 55.5,
     "normRecency": 45.1,
     "prevRank": 17,
-    "blurb": "0-1 record, averaging -21.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #4 projection, now down at #17."
+    "blurb": "0-1 기록, 평균 -21.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 4위 기대에 못 미쳐 현재 17위로 처짐."
   },
   {
     "id": "ARI",
@@ -315,13 +332,14 @@
     "sos": 0.458,
     "preseasonRank": 32,
     "ptDiffAvg": 12.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+    "colorPrimary": "#97233F",
+    "colorSecondary": "#000000",
     "normElo": 46.7,
     "normEpa": 50.2,
     "normSr": 41.0,
     "normRecency": 49.1,
     "prevRank": 18,
-    "blurb": "1-0 record, averaging +12.0 pts/game. Has faced an average-strength schedule, far exceeding the preseason #32 projection, now ranked #18."
+    "blurb": "1-0 기록, 평균 +12.0점차. 평이한 강도의 일정을 치렀고, 프리시즌 32위 예상을 크게 뛰어넘어 현재 18위."
   },
   {
     "id": "NYJ",
@@ -333,13 +351,14 @@
     "sos": 0.277,
     "preseasonRank": 29,
     "ptDiffAvg": 13.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+    "colorPrimary": "#125740",
+    "colorSecondary": "#FFFFFF",
     "normElo": 46.1,
     "normEpa": 49.0,
     "normSr": 44.5,
     "normRecency": 48.7,
     "prevRank": 19,
-    "blurb": "1-0 record, averaging +13.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #29 projection, now ranked #19."
+    "blurb": "1-0 기록, 평균 +13.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 29위 예상을 크게 뛰어넘어 현재 19위."
   },
   {
     "id": "LV",
@@ -351,13 +370,14 @@
     "sos": 0.252,
     "preseasonRank": 30,
     "ptDiffAvg": 14.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+    "colorPrimary": "#000000",
+    "colorSecondary": "#A5ACAF",
     "normElo": 45.1,
     "normEpa": 48.3,
     "normSr": 43.3,
     "normRecency": 47.9,
     "prevRank": 20,
-    "blurb": "1-0 record, averaging +14.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #30 projection, now ranked #20."
+    "blurb": "1-0 기록, 평균 +14.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 30위 예상을 크게 뛰어넘어 현재 20위."
   },
   {
     "id": "DAL",
@@ -369,13 +389,14 @@
     "sos": 0.555,
     "preseasonRank": 17,
     "ptDiffAvg": -8.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+    "colorPrimary": "#041E42",
+    "colorSecondary": "#869397",
     "normElo": 40.6,
     "normEpa": 41.8,
     "normSr": 40.4,
     "normRecency": 39.0,
     "prevRank": 21,
-    "blurb": "0-1 record, averaging -8.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #17 projection at #21."
+    "blurb": "0-1 기록, 평균 -8.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 17위 예상과 대체로 부합하는 21위."
   },
   {
     "id": "LAC",
@@ -387,13 +408,14 @@
     "sos": 0.4,
     "preseasonRank": 12,
     "ptDiffAvg": -12.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+    "colorPrimary": "#0080C6",
+    "colorSecondary": "#FFC20E",
     "normElo": 40.6,
     "normEpa": 39.9,
     "normSr": 46.2,
     "normRecency": 38.2,
     "prevRank": 22,
-    "blurb": "0-1 record, averaging -12.0 pts/game. Has faced a relatively weak schedule, falling short of the preseason #12 projection, now down at #22."
+    "blurb": "0-1 기록, 평균 -12.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 12위 기대에 못 미쳐 현재 22위로 처짐."
   },
   {
     "id": "TB",
@@ -405,13 +427,14 @@
     "sos": 0.671,
     "preseasonRank": 22,
     "ptDiffAvg": -6.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+    "colorPrimary": "#D50A0A",
+    "colorSecondary": "#34302B",
     "normElo": 39.2,
     "normEpa": 41.9,
     "normSr": 34.6,
     "normRecency": 38.0,
     "prevRank": 23,
-    "blurb": "0-1 record, averaging -6.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #22 projection at #23."
+    "blurb": "0-1 기록, 평균 -6.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 22위 예상과 대체로 부합하는 23위."
   },
   {
     "id": "NO",
@@ -423,13 +446,14 @@
     "sos": 0.632,
     "preseasonRank": 24,
     "ptDiffAvg": -1.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+    "colorPrimary": "#D3BC8D",
+    "colorSecondary": "#101820",
     "normElo": 38.5,
     "normEpa": 42.3,
     "normSr": 32.3,
     "normRecency": 38.3,
     "prevRank": 24,
-    "blurb": "0-1 record, averaging -1.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #24 projection at #24."
+    "blurb": "0-1 기록, 평균 -1.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 24위 예상과 대체로 부합하는 24위."
   },
   {
     "id": "GB",
@@ -441,13 +465,14 @@
     "sos": 0.568,
     "preseasonRank": 16,
     "ptDiffAvg": -17.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+    "colorPrimary": "#203731",
+    "colorSecondary": "#FFB612",
     "normElo": 38.4,
     "normEpa": 38.2,
     "normSr": 41.6,
     "normRecency": 35.0,
     "prevRank": 25,
-    "blurb": "0-1 record, averaging -17.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #16 projection, now down at #25."
+    "blurb": "0-1 기록, 평균 -17.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 16위 기대에 못 미쳐 현재 25위로 처짐."
   },
   {
     "id": "WAS",
@@ -459,13 +484,14 @@
     "sos": 0.71,
     "preseasonRank": 27,
     "ptDiffAvg": -2.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/was.png",
+    "colorPrimary": "#5A1414",
+    "colorSecondary": "#FFB612",
     "normElo": 37.0,
     "normEpa": 41.4,
     "normSr": 30,
     "normRecency": 36.6,
     "prevRank": 26,
-    "blurb": "0-1 record, averaging -2.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #27 projection at #26."
+    "blurb": "0-1 기록, 평균 -2.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 27위 예상과 대체로 부합하는 26위."
   },
   {
     "id": "CAR",
@@ -477,13 +503,14 @@
     "sos": 0.735,
     "preseasonRank": 21,
     "ptDiffAvg": -22.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+    "colorPrimary": "#0085CA",
+    "colorSecondary": "#101820",
     "normElo": 35.4,
     "normEpa": 35.8,
     "normSr": 35.8,
     "normRecency": 31.0,
     "prevRank": 27,
-    "blurb": "0-1 record, averaging -22.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #21 projection, now down at #27."
+    "blurb": "0-1 기록, 평균 -22.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 21위 기대에 못 미쳐 현재 27위로 처짐."
   },
   {
     "id": "ATL",
@@ -495,13 +522,14 @@
     "sos": 0.581,
     "preseasonRank": 25,
     "ptDiffAvg": -7.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png",
+    "colorPrimary": "#A71930",
+    "colorSecondary": "#000000",
     "normElo": 34.3,
     "normEpa": 37.6,
     "normSr": 31.1,
     "normRecency": 32.9,
     "prevRank": 28,
-    "blurb": "0-1 record, averaging -7.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #25 projection at #28."
+    "blurb": "0-1 기록, 평균 -7.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 25위 예상과 대체로 부합하는 28위."
   },
   {
     "id": "IND",
@@ -513,13 +541,14 @@
     "sos": 0.684,
     "preseasonRank": 23,
     "ptDiffAvg": -18.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+    "colorPrimary": "#002C5F",
+    "colorSecondary": "#A2AAAD",
     "normElo": 34.1,
     "normEpa": 35.5,
     "normSr": 33.5,
     "normRecency": 30.5,
     "prevRank": 29,
-    "blurb": "0-1 record, averaging -18.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #23 projection, now down at #29."
+    "blurb": "0-1 기록, 평균 -18.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 23위 기대에 못 미쳐 현재 29위로 처짐."
   },
   {
     "id": "MIA",
@@ -531,13 +560,14 @@
     "sos": 0.426,
     "preseasonRank": 28,
     "ptDiffAvg": -14.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+    "colorPrimary": "#008E97",
+    "colorSecondary": "#FC4C02",
     "normElo": 30,
     "normEpa": 29.1,
     "normSr": 30,
     "normRecency": 27.2,
     "prevRank": 30,
-    "blurb": "0-1 record, averaging -14.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #28 projection at #30."
+    "blurb": "0-1 기록, 평균 -14.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 28위 예상과 대체로 부합하는 30위."
   },
   {
     "id": "CLE",
@@ -549,13 +579,14 @@
     "sos": 0.697,
     "preseasonRank": 31,
     "ptDiffAvg": -24.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+    "colorPrimary": "#311D00",
+    "colorSecondary": "#FF3C00",
     "normElo": 30,
     "normEpa": 27.6,
     "normSr": 30,
     "normRecency": 25.2,
     "prevRank": 31,
-    "blurb": "0-1 record, averaging -24.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #31 projection at #31."
+    "blurb": "0-1 기록, 평균 -24.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 31위 예상과 대체로 부합하는 31위."
   },
   {
     "id": "TEN",
@@ -567,12 +598,13 @@
     "sos": 0.439,
     "preseasonRank": 26,
     "ptDiffAvg": -13.0,
-    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png",
+    "colorPrimary": "#0C2340",
+    "colorSecondary": "#4B92DB",
     "normElo": 30,
     "normEpa": 31.1,
     "normSr": 30,
     "normRecency": 27.4,
     "prevRank": 32,
-    "blurb": "0-1 record, averaging -13.0 pts/game. Has faced a relatively weak schedule, falling short of the preseason #26 projection, now down at #32."
+    "blurb": "0-1 기록, 평균 -13.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 26위 기대에 못 미쳐 현재 32위로 처짐."
   }
 ]
