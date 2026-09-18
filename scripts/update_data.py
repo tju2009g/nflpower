@@ -1,307 +1,140 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NFL Dynamic Power Rankings</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    input[type=range]::-webkit-slider-thumb {
-      height: 16px;
-      width: 16px;
-      border-radius: 9999px;
-      background: #10b981;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
-  <div id="root"></div>
+import json
+import urllib.request
+import csv
+import io
+import sys
 
-  <script type="text/babel">
-    const { useState, useEffect, useMemo } = React;
+# nflverse 공식 원격 경기 일정 및 스코어 데이터
+NFLVERSE_GAMES_URL = "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv"
 
-    const getTierBadge = (score) => {
-      if (score >= 88) return { label: 'Tier S (Contender)', color: 'bg-amber-500/20 text-amber-300 border-amber-500/40' };
-      if (score >= 79) return { label: 'Tier A (Playoff Lock)', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' };
-      if (score >= 70) return { label: 'Tier B (Bubble)', color: 'bg-sky-500/20 text-sky-300 border-sky-500/40' };
-      if (score >= 60) return { label: 'Tier C (In the Hunt)', color: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' };
-      return { label: 'Tier D (Rebuilding)', color: 'bg-rose-500/20 text-rose-300 border-rose-500/40' };
-    };
+# 32개 팀 메타데이터 (공식 로고 및 디비전)
+TEAM_METADATA = {
+    'KC': {'name': 'Kansas City Chiefs', 'conf': 'AFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png'},
+    'SF': {'name': 'San Francisco 49ers', 'conf': 'NFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png'},
+    'BAL': {'name': 'Baltimore Ravens', 'conf': 'AFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/bal.png'},
+    'DET': {'name': 'Detroit Lions', 'conf': 'NFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/det.png'},
+    'BUF': {'name': 'Buffalo Bills', 'conf': 'AFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png'},
+    'PHI': {'name': 'Philadelphia Eagles', 'conf': 'NFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png'},
+    'HOU': {'name': 'Houston Texans', 'conf': 'AFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/hou.png'},
+    'DAL': {'name': 'Dallas Cowboys', 'conf': 'NFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/dal.png'},
+    'GB': {'name': 'Green Bay Packers', 'conf': 'NFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/gb.png'},
+    'MIA': {'name': 'Miami Dolphins', 'conf': 'AFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/mia.png'},
+    'LAR': {'name': 'Los Angeles Rams', 'conf': 'NFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png'},
+    'CIN': {'name': 'Cincinnati Bengals', 'conf': 'AFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/cin.png'},
+    'PIT': {'name': 'Pittsburgh Steelers', 'conf': 'AFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png'},
+    'NYJ': {'name': 'New York Jets', 'conf': 'AFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png'},
+    'TB': {'name': 'Tampa Bay Buccaneers', 'conf': 'NFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/tb.png'},
+    'CHI': {'name': 'Chicago Bears', 'conf': 'NFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/chi.png'},
+    'SEA': {'name': 'Seattle Seahawks', 'conf': 'NFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png'},
+    'JAX': {'name': 'Jacksonville Jaguars', 'conf': 'AFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/jax.png'},
+    'CLE': {'name': 'Cleveland Browns', 'conf': 'AFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/cle.png'},
+    'IND': {'name': 'Indianapolis Colts', 'conf': 'AFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ind.png'},
+    'ATL': {'name': 'Atlanta Falcons', 'conf': 'NFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png'},
+    'NO': {'name': 'New Orleans Saints', 'conf': 'NFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png'},
+    'MIN': {'name': 'Minnesota Vikings', 'conf': 'NFC', 'div': 'North', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/min.png'},
+    'LAC': {'name': 'Los Angeles Chargers', 'conf': 'AFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lac.png'},
+    'ARI': {'name': 'Arizona Cardinals', 'conf': 'NFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png'},
+    'LV': {'name': 'Las Vegas Raiders', 'conf': 'AFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png'},
+    'TEN': {'name': 'Tennessee Titans', 'conf': 'AFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ten.png'},
+    'WAS': {'name': 'Washington Commanders', 'conf': 'NFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/was.png'},
+    'DEN': {'name': 'Denver Broncos', 'conf': 'AFC', 'div': 'West', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/den.png'},
+    'NYG': {'name': 'New York Giants', 'conf': 'NFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png'},
+    'NE': {'name': 'New England Patriots', 'conf': 'AFC', 'div': 'East', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/ne.png'},
+    'CAR': {'name': 'Carolina Panthers', 'conf': 'NFC', 'div': 'South', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png'}
+}
 
-    function App() {
-      const [teamsData, setTeamsData] = useState([]);
-      const [loading, setLoading] = useState(true);
-      const [loadError, setLoadError] = useState(null);
+NAME_MAP = {'LA': 'LAR', 'OAK': 'LV', 'SD': 'LAC', 'STL': 'LAR'}
 
-      const [weights, setWeights] = useState({
-        elo: 40,
-        epa: 30,
-        successRate: 15,
-        recency: 15,
-      });
+# 프리시즌 전문가 컨센서스 순위(1=최강, 32=최약) — PFT(NBC) 등 주요 매체의
+# 시즌 개막 전 파워랭킹 기준. "로스터 전력에 대한 사전 기대치"를 외부 검증된
+# 값으로 주입하기 위한 앵커. 매년 프리시즌 끝나면 이 값만 갱신하면 됨.
+PRESEASON_RANK = {
+    'SEA': 1, 'LAR': 2, 'HOU': 3, 'DEN': 4, 'BUF': 5, 'CHI': 6, 'NE': 7,
+    'PHI': 8, 'JAX': 9, 'BAL': 10, 'CIN': 11, 'LAC': 12, 'KC': 13, 'DET': 14,
+    'SF': 15, 'GB': 16, 'DAL': 17, 'PIT': 18, 'MIN': 19, 'NYG': 20, 'CAR': 21,
+    'TB': 22, 'IND': 23, 'NO': 24, 'ATL': 25, 'TEN': 26, 'WAS': 27, 'MIA': 28,
+    'NYJ': 29, 'LV': 30, 'CLE': 31, 'ARI': 32,
+}
 
-      const [searchTerm, setSearchTerm] = useState('');
-      const [copied, setCopied] = useState(false);
 
-      useEffect(() => {
-        fetch(`./nfl_data.json?v=${Date.now()}`)
-          .then((res) => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return res.json();
-          })
-          .then((data) => {
-            if (!Array.isArray(data) || data.length === 0) {
-              throw new Error('데이터가 비어 있습니다');
-            }
-            setTeamsData(data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.error('데이터 로드 오류:', err);
-            const isFileProtocol = window.location.protocol === 'file:';
-            setLoadError(
-              isFileProtocol
-                ? 'file:// 로 직접 열면 브라우저 보안 정책 때문에 데이터를 불러올 수 없습니다. "python3 -m http.server" 등으로 로컬 서버를 띄우거나, GitHub Pages 배포 주소로 접속하세요.'
-                : `nfl_data.json을 불러오지 못했습니다 (${err.message}). GitHub Actions가 아직 한 번도 실행되지 않았거나 파일 경로가 잘못됐을 수 있습니다.`
-            );
-            setLoading(false);
-          });
-      }, []);
+def preseason_prior_win_rate(tid):
+    """프리시즌 순위(1~32)를 승률 프라이어(0.75~0.25)로 선형 변환.
+    1위=0.75, 32위=0.25, 그 사이는 선형 보간. 완전 중립(0.5)이 아니라
+    실제 전문가 컨센서스를 사전분포로 쓴다."""
+    rank = PRESEASON_RANK.get(tid, 16.5)
+    return 0.75 - (rank - 1) / 31 * 0.5
 
-      const applyPreset = (type) => {
-        if (type === 'analytics') setWeights({ elo: 15, epa: 55, successRate: 20, recency: 10 });
-        if (type === 'traditional') setWeights({ elo: 60, epa: 15, successRate: 10, recency: 15 });
-        if (type === 'momentum') setWeights({ elo: 20, epa: 20, successRate: 10, recency: 50 });
-        if (type === 'default') setWeights({ elo: 40, epa: 30, successRate: 15, recency: 15 });
-      };
 
-      const rankedTeams = useMemo(() => {
-        if (!teamsData || teamsData.length === 0) return [];
+# 표본 부족 시 조기 포화(1경기만에 99/30 캡에 몰리는 문제)를 막기 위한
+# 베이지안 축소 상수 — 득실차(pt_diff)에 적용, "K경기 분량의 중립(0) 사전분포"를
+# 실제 경기 수와 섞는다. gp가 커질수록 실제 성적 비중이 자연히 커짐.
+SHRINKAGE_GAMES = 3
 
-        const total = weights.elo + weights.epa + weights.successRate + weights.recency || 1;
-        const wElo = weights.elo / total;
-        const wEpa = weights.epa / total;
-        const wSr = weights.successRate / total;
-        const wRec = weights.recency / total;
+# 프리시즌 프라이어가 승률 계산에 미치는 영향력 — "N경기 분량의 사전 기대치"로
+# 취급한다. 값이 클수록 시즌 초반 프리시즌 기대치 비중이 커지고, 시즌이
+# 진행되면서(gp 증가) 자연히 실제 성적 비중이 지배적이 됨.
+PRIOR_GAMES = 4
 
-        const calculated = teamsData.map((team) => {
-          const score = (team.normElo * wElo) + (team.normEpa * wEpa) + (team.normSr * wSr) + (team.normRecency * wRec);
-          return {
-            ...team,
-            dpsScore: score.toFixed(1),
-            rawScore: score,
-          };
-        });
+# SOS(상대 전력)가 elo/epa 점수에 미치는 최대 폭.
+# opponent 평균 승률이 0~1 극단일 때 ±(SOS_WEIGHT/2)점까지 보정.
+SOS_WEIGHT = 20
 
-        calculated.sort((a, b) => b.rawScore - a.rawScore);
 
-        return calculated.map((team, idx) => {
-          const rank = idx + 1;
-          const delta = (team.prevRank ?? rank) - rank;
-          return { ...team, rank, delta };
-        });
-      }, [teamsData, weights]);
-
-      const displayedTeams = useMemo(() => {
-        return rankedTeams.filter((team) =>
-          team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          team.id.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }, [rankedTeams, searchTerm]);
-
-      const handleShare = () => {
-        const top5 = rankedTeams.slice(0, 5).map((t, i) => `${i + 1}. ${t.name} (${t.dpsScore}점)`).join('\n');
-        const text = `⚡ My Custom NFL Power Ranking:\n${top5}\n\nMake yours at ${window.location.href.split('?')[0]}`;
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2500);
-      };
-
-      if (loading) {
-        return (
-          <div className="flex items-center justify-center min-h-screen text-slate-400">
-            <div className="animate-spin mr-3 text-emerald-400">⚡</div> 최신 NFL 데이터 불러오는 중...
-          </div>
-        );
-      }
-
-      if (loadError) {
-        return (
-          <div className="flex items-center justify-center min-h-screen px-6">
-            <div className="max-w-md bg-slate-900 border border-rose-500/30 rounded-2xl p-6 text-center">
-              <div className="text-rose-400 text-2xl mb-2">⚠️</div>
-              <p className="text-slate-300 text-sm">{loadError}</p>
-            </div>
-          </div>
-        );
-      }
-
-      return (
-        <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
-          {/* Header */}
-          <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="bg-emerald-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded">Auto Updated</span>
-                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                  NFL DYNAMIC POWER RANKINGS
-                </h1>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                매일 자동 갱신되는 정규화 지표 기반 실시간 커스텀 파워 랭킹
-              </p>
-            </div>
-            <button onClick={handleShare} className="px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors flex items-center gap-1.5 shadow-md self-start md:self-auto">
-              <span>{copied ? '✅ 복사 완료!' : '📢 내 랭킹 공유하기'}</span>
-            </button>
-          </header>
-
-          {/* Preset Buttons & Weight Sliders */}
-          <section className="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-5 shadow-xl space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">가중치 엔진</span>
-              <div className="flex flex-wrap gap-1.5">
-                <button onClick={() => applyPreset('default')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded">기본값</button>
-                <button onClick={() => applyPreset('analytics')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded">EPA 효율 중심</button>
-                <button onClick={() => applyPreset('traditional')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded">승패 Elo 중심</button>
-                <button onClick={() => applyPreset('momentum')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-amber-400 rounded">최근 모멘텀</button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1">
-              <div>
-                <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Elo Rating</span>
-                  <span className="text-emerald-400 font-mono font-bold">{weights.elo}%</span>
-                </div>
-                <input type="range" min="0" max="100" value={weights.elo}
-                  onChange={(e) => setWeights({ ...weights, elo: Number(e.target.value) })}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
-              </div>
-              <div>
-                <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Net EPA/Play</span>
-                  <span className="text-cyan-400 font-mono font-bold">{weights.epa}%</span>
-                </div>
-                <input type="range" min="0" max="100" value={weights.epa}
-                  onChange={(e) => setWeights({ ...weights, epa: Number(e.target.value) })}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
-              </div>
-              <div>
-                <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Success Rate</span>
-                  <span className="text-indigo-400 font-mono font-bold">{weights.successRate}%</span>
-                </div>
-                <input type="range" min="0" max="100" value={weights.successRate}
-                  onChange={(e) => setWeights({ ...weights, successRate: Number(e.target.value) })}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
-              </div>
-              <div>
-                <div className="flex justify-between text-xs font-semibold mb-1.5">
-                  <span className="text-slate-300">Recent Margin</span>
-                  <span className="text-amber-400 font-mono font-bold">{weights.recency}%</span>
-                </div>
-                <input type="range" min="0" max="100" value={weights.recency}
-                  onChange={(e) => setWeights({ ...weights, recency: Number(e.target.value) })}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
-              </div>
-            </div>
-          </section>
-
-          {/* Methodology */}
-          <details className="bg-slate-900/60 border border-slate-800/70 rounded-2xl px-5 py-3 text-xs text-slate-400 group">
-            <summary className="cursor-pointer font-semibold text-slate-300 select-none">
-              ℹ️ 산정 방식 (클릭해서 펼치기)
-            </summary>
-            <div className="mt-3 space-y-2 leading-relaxed">
-              <p>
-                <span className="text-slate-200 font-semibold">데이터:</span> nflverse 공식 경기 결과를 매일 자동 수집·재계산.
-              </p>
-              <p>
-                <span className="text-slate-200 font-semibold">4개 슬라이더 지표</span>는 실제로는 승률과 득실차라는 두 원재료를 다른 비율로 조합한 값입니다 —
-                Elo Rating(승률 중심), Net EPA/Play(득실차 비중 ↑), Success Rate(승률만), Recent Margin(Elo + 최근 득실 가중).
-                슬라이더는 이 4개 값을 사용자가 원하는 비율로 블렌딩하는 최종 가중치입니다.
-              </p>
-              <p>
-                <span className="text-slate-200 font-semibold">슬라이더로 조절되지 않는 내부 보정 2가지</span>가 원재료 계산 단계에 이미 반영돼 있습니다:
-              </p>
-              <ul className="list-disc list-inside pl-2 space-y-1">
-                <li><span className="text-slate-300">프리시즌 전문가 컨센서스 프라이어</span> — 시즌 초반엔 비중이 크고, 팀당 경기 수가 쌓일수록 실제 성적 비중이 자연히 커짐 (베이지안 축소).</li>
-                <li><span className="text-slate-300">SOS(상대 전력 보정)</span> — 상대가 강했는지 약했는지를 반영해 승리·패배의 가치를 재조정.</li>
-              </ul>
-              <p className="text-slate-500">
-                즉 슬라이더는 "이미 보정된 4개 지표"를 섞는 최종 단계이고, 프리시즌 기대치·SOS는 그 이전 단계에서 고정 로직으로 처리됩니다.
-              </p>
-            </div>
-          </details>
-
-          {/* Search Box */}
-          <div className="flex justify-end">
-            <input
-              type="text"
-              placeholder="팀명 검색 (예: Chiefs, KC)..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-64 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-            />
-          </div>
-
-          {/* Table */}
-          <section className="bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-800 bg-slate-950/70 text-xs text-slate-400 uppercase tracking-wider">
-                    <th className="p-3.5 pl-5">순위</th>
-                    <th className="p-3.5">팀</th>
-                    <th className="p-3.5 text-right">DPS 종합점수</th>
-                    <th className="p-3.5 text-center">전력 티어</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/60 text-sm">
-                  {displayedTeams.map((team) => {
-                    const badge = getTierBadge(team.rawScore);
-                    return (
-                      <tr key={team.id} className="hover:bg-slate-800/40 transition-colors">
-                        <td className="p-3.5 pl-5 font-bold font-mono">
-                          <span className="text-base text-white mr-2">{team.rank}</span>
-                          {team.delta > 0 && <span className="text-xs text-emerald-400">▲{team.delta}</span>}
-                          {team.delta < 0 && <span className="text-xs text-rose-500">▼{Math.abs(team.delta)}</span>}
-                          {team.delta === 0 && <span className="text-xs text-slate-600">-</span>}
-                        </td>
-                        <td className="p-3.5 flex items-center gap-3">
-                          <img src={team.logo} alt={team.name} className="w-7 h-7 object-contain drop-shadow" />
-                          <div>
-                            <div className="font-bold text-white text-sm leading-snug">{team.name}</div>
-                            <div className="text-xs text-slate-500 font-mono">{team.record}</div>
-                          </div>
-                        </td>
-                        <td className="p-3.5 text-right font-mono font-black text-emerald-400 text-base">
-                          {team.dpsScore}
-                        </td>
-                        <td className="p-3.5 text-center">
-                          <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${badge.color}`}>
-                            {badge.label}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      );
+def fetch_and_calculate_stats():
+    team_stats = {
+        tid: {
+            'wins': 0, 'losses': 0, 'ties': 0,
+            'points_for': 0, 'points_against': 0, 'games_played': 0,
+            'opponents': [],  # 이번 시즌 맞붙은 상대 팀 id 목록 (SOS 계산용)
+        }
+        for tid in TEAM_METADATA.keys()
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
-</body>
-</html>
+    try:
+        req = urllib.request.Request(NFLVERSE_GAMES_URL, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=25) as resp:
+            csv_text = resp.read().decode('utf-8')
+
+        rows = list(csv.DictReader(io.StringIO(csv_text)))
+
+        # 1. 최신 정규시즌 연도(Season) 자동 탐색
+        seasons_with_scores = [
+            int(r['season']) for r in rows
+            if r.get('game_type') == 'REG' and r.get('home_score') and r.get('away_score')
+        ]
+        if not seasons_with_scores:
+            raise RuntimeError("no completed REG-season games found in nflverse feed")
+        target_season = max(seasons_with_scores)
+        print(f"Targeting active NFL season: {target_season}")
+
+        # 2. 해당 최신 시즌의 경기만 집계
+        for row in rows:
+            if str(row.get('season')) == str(target_season) and row.get('game_type') == 'REG':
+                if row.get('home_score') and row.get('away_score'):
+                    h_team = NAME_MAP.get(row['home_team'], row['home_team'])
+                    a_team = NAME_MAP.get(row['away_team'], row['away_team'])
+
+                    if h_team in team_stats and a_team in team_stats:
+                        try:
+                            h_score = int(float(row['home_score']))
+                            a_score = int(float(row['away_score']))
+                        except ValueError:
+                            continue
+
+                        team_stats[h_team]['games_played'] += 1
+                        team_stats[a_team]['games_played'] += 1
+                        team_stats[h_team]['points_for'] += h_score
+                        team_stats[h_team]['points_against'] += a_score
+                        team_stats[a_team]['points_for'] += a_score
+                        team_stats[a_team]['points_against'] += h_score
+                        team_stats[h_team]['opponents'].append(a_team)
+                        team_stats[a_team]['opponents'].append(h_team)
+
+                        if h_score > a_score:
+                            team_stats[h_team]['wins'] += 1
+                            team_stats[a_team]['losses'] += 1
+                        elif a_score > h_score:
+                            team_stats[a_team]['wins'] += 1
+                            team_stats[h_team]['losses'] += 1
+                        else:
+                            team_stats[h_team]['ties'] += 1
