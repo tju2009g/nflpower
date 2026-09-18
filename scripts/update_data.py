@@ -50,10 +50,18 @@ NAME_MAP = {'LA': 'LAR', 'OAK': 'LV', 'SD': 'LAC', 'STL': 'LAR'}
 # gp가 커질수록(시즌이 진행될수록) 실제 성적 비중이 자연히 커짐.
 SHRINKAGE_GAMES = 3
 
+# SOS(상대 전력)가 elo/epa 점수에 미치는 최대 폭.
+# opponent 평균 승률이 0~1 극단일 때 ±(SOS_WEIGHT/2)점까지 보정.
+SOS_WEIGHT = 20
+
 
 def fetch_and_calculate_stats():
     team_stats = {
-        tid: {'wins': 0, 'losses': 0, 'ties': 0, 'points_for': 0, 'points_against': 0, 'games_played': 0}
+        tid: {
+            'wins': 0, 'losses': 0, 'ties': 0,
+            'points_for': 0, 'points_against': 0, 'games_played': 0,
+            'opponents': [],  # 이번 시즌 맞붙은 상대 팀 id 목록 (SOS 계산용)
+        }
         for tid in TEAM_METADATA.keys()
     }
 
@@ -94,6 +102,8 @@ def fetch_and_calculate_stats():
                         team_stats[h_team]['points_against'] += a_score
                         team_stats[a_team]['points_for'] += a_score
                         team_stats[a_team]['points_against'] += h_score
+                        team_stats[h_team]['opponents'].append(a_team)
+                        team_stats[a_team]['opponents'].append(h_team)
 
                         if h_score > a_score:
                             team_stats[h_team]['wins'] += 1
@@ -110,7 +120,27 @@ def fetch_and_calculate_stats():
         # 남아있으면 그대로 유지되고, 없으면 gp=0 중립값(전 팀 50점)으로 생성된다.
         print(f"Warning: Remote fetch issue ({e})", file=sys.stderr)
 
-    # 3. 표본 수 축소(shrinkage) 적용 정규화
+    # 3. SOS(상대 전력) 계산 — 상대팀의 "축소 적용된" 승률을 먼저 구한다.
+    #    주의: raw 승률(그대로의 승/패)을 쓰면 시즌 초반 치명적 순환 문제가 생긴다 —
+    #    1경기만 치른 시점에서는 "상대의 승률"이 곧 "나와 붙어 이겼는지 여부"와
+    #    동일해져서(내가 이기면 상대는 자동 0패=SOS 0, 내가 지면 상대는 자동 1승=
+    #    SOS 1), 이기고도 SOS 페널티를 받고 지고도 SOS 보너스를 받는 왜곡이 생긴다.
+    #    상대 승률에도 동일한 shrinkage(K)를 먼저 적용해 이 순환을 완화한다.
+    shrunk_win_rate = {}
+    for tid in TEAM_METADATA:
+        st = team_stats[tid]
+        gp = st['games_played']
+        shrunk_win_rate[tid] = (
+            (st['wins'] + 0.5 * st['ties'] + 0.5 * SHRINKAGE_GAMES) / (gp + SHRINKAGE_GAMES)
+        )
+
+    def strength_of_schedule(tid):
+        opponents = team_stats[tid]['opponents']
+        if not opponents:
+            return 0.5
+        return sum(shrunk_win_rate[opp] for opp in opponents) / len(opponents)
+
+    # 4. 표본 수 축소(shrinkage) + SOS 보정 적용 정규화
     teams_output = []
     K = SHRINKAGE_GAMES
     for tid, meta in TEAM_METADATA.items():
@@ -119,14 +149,19 @@ def fetch_and_calculate_stats():
         w, l, t = st['wins'], st['losses'], st['ties']
 
         record_str = f"{w}-{l}" + (f"-{t}" if t > 0 else "") if gp > 0 else "0-0"
+        sos = strength_of_schedule(tid)
 
         # 중립 사전분포(승률 0.5, 득실차 0)를 K경기 분량으로 섞는다.
         # gp=0이면 그대로 0.5/0 — gp가 커질수록 실제 성적 비중이 지배적이 됨.
         adj_win_rate = (w + 0.5 * t + 0.5 * K) / (gp + K)
         adj_pt_diff = (st['points_for'] - st['points_against']) / (gp + K)
 
-        norm_elo = round(max(30, min(99, 50 + (adj_win_rate - 0.5) * 70 + adj_pt_diff * 1.5)), 1)
-        norm_epa = round(max(25, min(99, 50 + (adj_win_rate - 0.5) * 50 + adj_pt_diff * 2.0)), 1)
+        # SOS 보정: 상대 평균 승률이 0.5보다 높으면(강한 일정) 가산,
+        # 낮으면(약한 일정) 감산. gp=0이면 sos=0.5라 보정 0.
+        sos_adjustment = (sos - 0.5) * SOS_WEIGHT
+
+        norm_elo = round(max(30, min(99, 50 + (adj_win_rate - 0.5) * 70 + adj_pt_diff * 1.5 + sos_adjustment)), 1)
+        norm_epa = round(max(25, min(99, 50 + (adj_win_rate - 0.5) * 50 + adj_pt_diff * 2.0 + sos_adjustment)), 1)
         norm_sr = round(max(30, min(98, 50 + (adj_win_rate - 0.5) * 90)), 1)
         norm_rec = round(max(25, min(99, norm_elo + adj_pt_diff * 0.8)), 1)
 
@@ -137,6 +172,7 @@ def fetch_and_calculate_stats():
             "div": meta['div'],
             "record": record_str,
             "gamesPlayed": gp,
+            "sos": round(sos, 3),
             "logo": meta['logo'],
             "normElo": norm_elo,
             "normEpa": norm_epa,
@@ -153,7 +189,7 @@ def fetch_and_calculate_stats():
     with open("nfl_data.json", "w", encoding="utf-8") as f:
         json.dump(teams_output, f, ensure_ascii=False, indent=2)
 
-    print(f"Successfully generated data for {len(teams_output)} teams (shrinkage K={K}).")
+    print(f"Successfully generated data for {len(teams_output)} teams (shrinkage K={K}, SOS weight={SOS_WEIGHT}).")
 
 
 if __name__ == "__main__":
