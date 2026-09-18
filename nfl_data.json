@@ -15,7 +15,7 @@
     "normSr": 77.0,
     "normRecency": 73.2,
     "prevRank": 1,
-    "blurb": "1-0 기록, 평균 +3.0점차. 평이한 강도의 일정을 치렀고, 프리시즌 1위 예상과 대체로 부합하는 1위."
+    "blurb": "1-0 record, averaging +3.0 pts/game. Has faced an average-strength schedule, roughly in line with the preseason #1 projection at #1."
   },
   {
     "id": "CHI",
@@ -33,7 +33,7 @@
     "normSr": 71.2,
     "normRecency": 76.0,
     "prevRank": 2,
-    "blurb": "1-0 기록, 평균 +22.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 6위 예상과 대체로 부합하는 2위."
+    "blurb": "1-0 record, averaging +22.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #6 projection at #2."
   },
   {
     "id": "BUF",
@@ -51,7 +51,7 @@
     "normSr": 72.4,
     "normRecency": 71.7,
     "prevRank": 3,
-    "blurb": "1-0 기록, 평균 +5.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 5위 예상과 대체로 부합하는 3위."
+    "blurb": "1-0 record, averaging +5.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #5 projection at #3."
   },
   {
     "id": "KC",
@@ -69,7 +69,7 @@
     "normSr": 63.1,
     "normRecency": 73.5,
     "prevRank": 4,
-    "blurb": "1-0 기록, 평균 +21.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 13위 예상을 크게 뛰어넘어 현재 4위."
+    "blurb": "1-0 record, averaging +21.0 pts/game. Has faced a relatively tough schedule, far exceeding the preseason #13 projection, now ranked #4."
   },
   {
     "id": "SF",
@@ -87,7 +87,7 @@
     "normSr": 60.7,
     "normRecency": 71.6,
     "prevRank": 5,
-    "blurb": "1-0 기록, 평균 +20.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 15위 예상을 크게 뛰어넘어 현재 5위."
+    "blurb": "1-0 record, averaging +20.0 pts/game. Has faced a relatively tough schedule, far exceeding the preseason #15 projection, now ranked #5."
   },
   {
     "id": "JAX",
@@ -105,7 +105,7 @@
     "normSr": 67.7,
     "normRecency": 71.8,
     "prevRank": 6,
-    "blurb": "1-0 기록, 평균 +24.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 9위 예상과 대체로 부합하는 6위."
+    "blurb": "1-0 record, averaging +24.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #9 projection at #6."
   },
   {
     "id": "BAL",
@@ -123,7 +123,7 @@
     "normSr": 66.5,
     "normRecency": 69.5,
     "prevRank": 7,
-    "blurb": "1-0 기록, 평균 +18.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 10위 예상과 대체로 부합하는 7위."
+    "blurb": "1-0 record, averaging +18.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #10 projection at #7."
   },
   {
     "id": "CIN",
@@ -141,7 +141,7 @@
     "normSr": 65.4,
     "normRecency": 62.0,
     "prevRank": 8,
-    "blurb": "1-0 기록, 평균 +6.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 11위 예상과 대체로 부합하는 8위."
+    "blurb": "1-0 record, averaging +6.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #11 projection at #8."
   },
   {
     "id": "PHI",
@@ -159,7 +159,7 @@
     "normSr": 68.9,
     "normRecency": 61.1,
     "prevRank": 9,
-    "blurb": "1-0 기록, 평균 +2.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 8위 예상과 대체로 부합하는 9위."
+    "blurb": "1-0 record, averaging +2.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #8 projection at #9."
   },
   {
     "id": "MIN",
@@ -177,7 +177,7 @@
     "normSr": 56.1,
     "normRecency": 62.6,
     "prevRank": 10,
-    "blurb": "1-0 기록, 평균 +17.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 19위 예상을 크게 뛰어넘어 현재 10위."
+    "blurb": "1-0 record, averaging +17.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #19 projection, now ranked #10."
   },
   {
     "id": "HOU",
@@ -195,7 +195,7 @@
     "normSr": 56.7,
     "normRecency": 57.3,
     "prevRank": 11,
-    "blurb": "0-1 기록, 평균 -5.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 3위 기대에 못 미쳐 현재 11위로 처짐."
+    "blurb": "0-1 record, averaging -5.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #3 projection, now down at #11."
   },
   {
     "id": "NE",
@@ -213,7 +213,7 @@
     "normSr": 52.0,
     "normRecency": 55.9,
     "prevRank": 12,
-    "blurb": "0-1 기록, 평균 -3.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 7위 기대에 못 미쳐 현재 12위로 처짐."
+    "blurb": "0-1 record, averaging -3.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #7 projection, now down at #12."
   },
   {
     "id": "DET",
@@ -231,7 +231,7 @@
     "normSr": 61.9,
     "normRecency": 55.9,
     "prevRank": 13,
-    "blurb": "1-0 기록, 평균 +1.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 14위 예상과 대체로 부합하는 13위."
+    "blurb": "1-0 record, averaging +1.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #14 projection at #13."
   },
   {
     "id": "NYG",
@@ -249,7 +249,7 @@
     "normSr": 54.9,
     "normRecency": 56.3,
     "prevRank": 14,
-    "blurb": "1-0 기록, 평균 +8.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 20위 예상을 크게 뛰어넘어 현재 14위."
+    "blurb": "1-0 record, averaging +8.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #20 projection, now ranked #14."
   },
   {
     "id": "PIT",
@@ -267,7 +267,7 @@
     "normSr": 57.3,
     "normRecency": 55.5,
     "prevRank": 15,
-    "blurb": "1-0 기록, 평균 +7.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 18위 예상과 대체로 부합하는 15위."
+    "blurb": "1-0 record, averaging +7.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #18 projection at #15."
   },
   {
     "id": "LAR",
@@ -285,7 +285,7 @@
     "normSr": 57.8,
     "normRecency": 47.0,
     "prevRank": 16,
-    "blurb": "0-1 기록, 평균 -20.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 2위 기대에 못 미쳐 현재 16위로 처짐."
+    "blurb": "0-1 record, averaging -20.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #2 projection, now down at #16."
   },
   {
     "id": "DEN",
@@ -303,7 +303,7 @@
     "normSr": 55.5,
     "normRecency": 45.1,
     "prevRank": 17,
-    "blurb": "0-1 기록, 평균 -21.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 4위 기대에 못 미쳐 현재 17위로 처짐."
+    "blurb": "0-1 record, averaging -21.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #4 projection, now down at #17."
   },
   {
     "id": "ARI",
@@ -321,7 +321,7 @@
     "normSr": 41.0,
     "normRecency": 49.1,
     "prevRank": 18,
-    "blurb": "1-0 기록, 평균 +12.0점차. 평이한 강도의 일정을 치렀고, 프리시즌 32위 예상을 크게 뛰어넘어 현재 18위."
+    "blurb": "1-0 record, averaging +12.0 pts/game. Has faced an average-strength schedule, far exceeding the preseason #32 projection, now ranked #18."
   },
   {
     "id": "NYJ",
@@ -339,7 +339,7 @@
     "normSr": 44.5,
     "normRecency": 48.7,
     "prevRank": 19,
-    "blurb": "1-0 기록, 평균 +13.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 29위 예상을 크게 뛰어넘어 현재 19위."
+    "blurb": "1-0 record, averaging +13.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #29 projection, now ranked #19."
   },
   {
     "id": "LV",
@@ -357,7 +357,7 @@
     "normSr": 43.3,
     "normRecency": 47.9,
     "prevRank": 20,
-    "blurb": "1-0 기록, 평균 +14.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 30위 예상을 크게 뛰어넘어 현재 20위."
+    "blurb": "1-0 record, averaging +14.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #30 projection, now ranked #20."
   },
   {
     "id": "DAL",
@@ -375,7 +375,7 @@
     "normSr": 40.4,
     "normRecency": 39.0,
     "prevRank": 21,
-    "blurb": "0-1 기록, 평균 -8.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 17위 예상과 대체로 부합하는 21위."
+    "blurb": "0-1 record, averaging -8.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #17 projection at #21."
   },
   {
     "id": "LAC",
@@ -393,7 +393,7 @@
     "normSr": 46.2,
     "normRecency": 38.2,
     "prevRank": 22,
-    "blurb": "0-1 기록, 평균 -12.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 12위 기대에 못 미쳐 현재 22위로 처짐."
+    "blurb": "0-1 record, averaging -12.0 pts/game. Has faced a relatively weak schedule, falling short of the preseason #12 projection, now down at #22."
   },
   {
     "id": "TB",
@@ -411,7 +411,7 @@
     "normSr": 34.6,
     "normRecency": 38.0,
     "prevRank": 23,
-    "blurb": "0-1 기록, 평균 -6.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 22위 예상과 대체로 부합하는 23위."
+    "blurb": "0-1 record, averaging -6.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #22 projection at #23."
   },
   {
     "id": "NO",
@@ -429,7 +429,7 @@
     "normSr": 32.3,
     "normRecency": 38.3,
     "prevRank": 24,
-    "blurb": "0-1 기록, 평균 -1.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 24위 예상과 대체로 부합하는 24위."
+    "blurb": "0-1 record, averaging -1.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #24 projection at #24."
   },
   {
     "id": "GB",
@@ -447,7 +447,7 @@
     "normSr": 41.6,
     "normRecency": 35.0,
     "prevRank": 25,
-    "blurb": "0-1 기록, 평균 -17.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 16위 기대에 못 미쳐 현재 25위로 처짐."
+    "blurb": "0-1 record, averaging -17.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #16 projection, now down at #25."
   },
   {
     "id": "WAS",
@@ -465,7 +465,7 @@
     "normSr": 30,
     "normRecency": 36.6,
     "prevRank": 26,
-    "blurb": "0-1 기록, 평균 -2.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 27위 예상과 대체로 부합하는 26위."
+    "blurb": "0-1 record, averaging -2.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #27 projection at #26."
   },
   {
     "id": "CAR",
@@ -483,7 +483,7 @@
     "normSr": 35.8,
     "normRecency": 31.0,
     "prevRank": 27,
-    "blurb": "0-1 기록, 평균 -22.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 21위 기대에 못 미쳐 현재 27위로 처짐."
+    "blurb": "0-1 record, averaging -22.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #21 projection, now down at #27."
   },
   {
     "id": "ATL",
@@ -501,7 +501,7 @@
     "normSr": 31.1,
     "normRecency": 32.9,
     "prevRank": 28,
-    "blurb": "0-1 기록, 평균 -7.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 25위 예상과 대체로 부합하는 28위."
+    "blurb": "0-1 record, averaging -7.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #25 projection at #28."
   },
   {
     "id": "IND",
@@ -519,7 +519,7 @@
     "normSr": 33.5,
     "normRecency": 30.5,
     "prevRank": 29,
-    "blurb": "0-1 기록, 평균 -18.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 23위 기대에 못 미쳐 현재 29위로 처짐."
+    "blurb": "0-1 record, averaging -18.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #23 projection, now down at #29."
   },
   {
     "id": "MIA",
@@ -537,7 +537,7 @@
     "normSr": 30,
     "normRecency": 27.2,
     "prevRank": 30,
-    "blurb": "0-1 기록, 평균 -14.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 28위 예상과 대체로 부합하는 30위."
+    "blurb": "0-1 record, averaging -14.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #28 projection at #30."
   },
   {
     "id": "CLE",
@@ -555,7 +555,7 @@
     "normSr": 30,
     "normRecency": 25.2,
     "prevRank": 31,
-    "blurb": "0-1 기록, 평균 -24.0점차. 상대적으로 만만치 않은 일정을 소화했고, 프리시즌 31위 예상과 대체로 부합하는 31위."
+    "blurb": "0-1 record, averaging -24.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #31 projection at #31."
   },
   {
     "id": "TEN",
@@ -573,6 +573,6 @@
     "normSr": 30,
     "normRecency": 27.4,
     "prevRank": 32,
-    "blurb": "0-1 기록, 평균 -13.0점차. 비교적 약한 상대들과 붙었고, 프리시즌 26위 기대에 못 미쳐 현재 32위로 처짐."
+    "blurb": "0-1 record, averaging -13.0 pts/game. Has faced a relatively weak schedule, falling short of the preseason #26 projection, now down at #32."
   }
 ]
