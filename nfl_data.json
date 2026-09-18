@@ -1,5 +1,24 @@
 [
   {
+    "id": "BUF",
+    "name": "Buffalo Bills",
+    "conf": "AFC",
+    "div": "East",
+    "record": "2-0",
+    "gamesPlayed": 2,
+    "sos": 0.551,
+    "preseasonRank": 5,
+    "ptDiffAvg": 7.5,
+    "colorPrimary": "#00338D",
+    "colorSecondary": "#C60C30",
+    "normElo": 75.8,
+    "normEpa": 71.5,
+    "normSr": 76.1,
+    "normRecency": 78.2,
+    "prevRank": 1,
+    "blurb": "2-0 record, averaging +7.5 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #5 projection at #1."
+  },
+  {
     "id": "SEA",
     "name": "Seattle Seahawks",
     "conf": "NFC",
@@ -15,8 +34,8 @@
     "normEpa": 67.0,
     "normSr": 77.0,
     "normRecency": 73.2,
-    "prevRank": 1,
-    "blurb": "1-0 record, averaging +3.0 pts/game. Has faced an average-strength schedule, roughly in line with the preseason #1 projection at #1."
+    "prevRank": 2,
+    "blurb": "1-0 record, averaging +3.0 pts/game. Has faced an average-strength schedule, roughly in line with the preseason #1 projection at #2."
   },
   {
     "id": "CHI",
@@ -34,27 +53,8 @@
     "normEpa": 69.6,
     "normSr": 71.2,
     "normRecency": 76.0,
-    "prevRank": 2,
-    "blurb": "1-0 record, averaging +22.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #6 projection at #2."
-  },
-  {
-    "id": "BUF",
-    "name": "Buffalo Bills",
-    "conf": "AFC",
-    "div": "East",
-    "record": "1-0",
-    "gamesPlayed": 1,
-    "sos": 0.574,
-    "preseasonRank": 5,
-    "ptDiffAvg": 5.0,
-    "colorPrimary": "#00338D",
-    "colorSecondary": "#C60C30",
-    "normElo": 70.7,
-    "normEpa": 66.4,
-    "normSr": 72.4,
-    "normRecency": 71.7,
     "prevRank": 3,
-    "blurb": "1-0 record, averaging +5.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #5 projection at #3."
+    "blurb": "1-0 record, averaging +22.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #6 projection at #3."
   },
   {
     "id": "KC",
@@ -196,15 +196,15 @@
     "div": "South",
     "record": "0-1",
     "gamesPlayed": 1,
-    "sos": 0.748,
+    "sos": 0.79,
     "preseasonRank": 3,
     "ptDiffAvg": -5.0,
     "colorPrimary": "#03202F",
     "colorSecondary": "#A71930",
-    "normElo": 58.3,
-    "normEpa": 56.2,
+    "normElo": 59.1,
+    "normEpa": 57.0,
     "normSr": 56.7,
-    "normRecency": 57.3,
+    "normRecency": 58.1,
     "prevRank": 11,
     "blurb": "0-1 record, averaging -5.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #3 projection, now down at #11."
   },
@@ -228,25 +228,6 @@
     "blurb": "0-1 record, averaging -3.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #7 projection, now down at #12."
   },
   {
-    "id": "DET",
-    "name": "Detroit Lions",
-    "conf": "NFC",
-    "div": "North",
-    "record": "1-0",
-    "gamesPlayed": 1,
-    "sos": 0.303,
-    "preseasonRank": 14,
-    "ptDiffAvg": 1.0,
-    "colorPrimary": "#0076B6",
-    "colorSecondary": "#B0B7BC",
-    "normElo": 55.7,
-    "normEpa": 53.2,
-    "normSr": 61.9,
-    "normRecency": 55.9,
-    "prevRank": 13,
-    "blurb": "1-0 record, averaging +1.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #14 projection at #13."
-  },
-  {
     "id": "NYG",
     "name": "New York Giants",
     "conf": "NFC",
@@ -262,8 +243,8 @@
     "normEpa": 54.6,
     "normSr": 54.9,
     "normRecency": 56.3,
-    "prevRank": 14,
-    "blurb": "1-0 record, averaging +8.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #20 projection, now ranked #14."
+    "prevRank": 13,
+    "blurb": "1-0 record, averaging +8.0 pts/game. Has faced a relatively weak schedule, far exceeding the preseason #20 projection, now ranked #13."
   },
   {
     "id": "PIT",
@@ -281,8 +262,8 @@
     "normEpa": 53.3,
     "normSr": 57.3,
     "normRecency": 55.5,
-    "prevRank": 15,
-    "blurb": "1-0 record, averaging +7.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #18 projection at #15."
+    "prevRank": 14,
+    "blurb": "1-0 record, averaging +7.0 pts/game. Has faced a relatively weak schedule, roughly in line with the preseason #18 projection at #14."
   },
   {
     "id": "LAR",
@@ -300,8 +281,27 @@
     "normEpa": 46.7,
     "normSr": 57.8,
     "normRecency": 47.0,
+    "prevRank": 15,
+    "blurb": "0-1 record, averaging -20.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #2 projection, now down at #15."
+  },
+  {
+    "id": "DET",
+    "name": "Detroit Lions",
+    "conf": "NFC",
+    "div": "North",
+    "record": "1-1",
+    "gamesPlayed": 2,
+    "sos": 0.547,
+    "preseasonRank": 14,
+    "ptDiffAvg": -4.5,
+    "colorPrimary": "#0076B6",
+    "colorSecondary": "#B0B7BC",
+    "normElo": 50.1,
+    "normEpa": 48.7,
+    "normSr": 52.4,
+    "normRecency": 48.7,
     "prevRank": 16,
-    "blurb": "0-1 record, averaging -20.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #2 projection, now down at #16."
+    "blurb": "1-1 record, averaging -4.5 pts/game. Has faced an average-strength schedule, roughly in line with the preseason #14 projection at #16."
   },
   {
     "id": "DEN",
@@ -437,25 +437,6 @@
     "blurb": "0-1 record, averaging -6.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #22 projection at #23."
   },
   {
-    "id": "NO",
-    "name": "New Orleans Saints",
-    "conf": "NFC",
-    "div": "South",
-    "record": "0-1",
-    "gamesPlayed": 1,
-    "sos": 0.632,
-    "preseasonRank": 24,
-    "ptDiffAvg": -1.0,
-    "colorPrimary": "#D3BC8D",
-    "colorSecondary": "#101820",
-    "normElo": 38.5,
-    "normEpa": 42.3,
-    "normSr": 32.3,
-    "normRecency": 38.3,
-    "prevRank": 24,
-    "blurb": "0-1 record, averaging -1.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #24 projection at #24."
-  },
-  {
     "id": "GB",
     "name": "Green Bay Packers",
     "conf": "NFC",
@@ -471,8 +452,8 @@
     "normEpa": 38.2,
     "normSr": 41.6,
     "normRecency": 35.0,
-    "prevRank": 25,
-    "blurb": "0-1 record, averaging -17.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #16 projection, now down at #25."
+    "prevRank": 24,
+    "blurb": "0-1 record, averaging -17.0 pts/game. Has faced a relatively tough schedule, falling short of the preseason #16 projection, now down at #24."
   },
   {
     "id": "WAS",
@@ -490,8 +471,27 @@
     "normEpa": 41.4,
     "normSr": 30,
     "normRecency": 36.6,
+    "prevRank": 25,
+    "blurb": "0-1 record, averaging -2.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #27 projection at #25."
+  },
+  {
+    "id": "NO",
+    "name": "New Orleans Saints",
+    "conf": "NFC",
+    "div": "South",
+    "record": "0-1",
+    "gamesPlayed": 1,
+    "sos": 0.527,
+    "preseasonRank": 24,
+    "ptDiffAvg": -1.0,
+    "colorPrimary": "#D3BC8D",
+    "colorSecondary": "#101820",
+    "normElo": 36.4,
+    "normEpa": 40.2,
+    "normSr": 32.3,
+    "normRecency": 36.2,
     "prevRank": 26,
-    "blurb": "0-1 record, averaging -2.0 pts/game. Has faced a relatively tough schedule, roughly in line with the preseason #27 projection at #26."
+    "blurb": "0-1 record, averaging -1.0 pts/game. Has faced an average-strength schedule, roughly in line with the preseason #24 projection at #26."
   },
   {
     "id": "CAR",

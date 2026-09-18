@@ -9,9 +9,9 @@
       "home_blend": 69.8,
       "predicted_winner": "BUF",
       "predicted_at": "2026-09-18T01:41:24.637015+00:00",
-      "actual_winner": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "BUF",
+      "correct": true,
+      "settled_at": "2026-09-18T10:09:09.586539+00:00"
     },
     "2026-2-CAR-ATL": {
       "season": 2026,
@@ -211,10 +211,15 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 0,
-    "total_correct": 0,
-    "accuracy": null,
-    "by_week": {},
-    "updated_at": "2026-09-18T02:36:54.548168+00:00"
+    "total_settled": 1,
+    "total_correct": 1,
+    "accuracy": 1.0,
+    "by_week": {
+      "2": {
+        "total": 1,
+        "correct": 1
+      }
+    },
+    "updated_at": "2026-09-18T10:09:09.586539+00:00"
   }
 }
