@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFL Dynamic Power Rankings</title>
+  <!-- Tailwind CSS & React / Babel CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    input[type=range]::-webkit-slider-thumb {
+      height: 16px;
+      width: 16px;
+      border-radius: 9999px;
+      background: #10b981;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const getTierBadge = (score) => {
+      if (score >= 88) return { label: 'Tier S (Contender)', color: 'bg-amber-500/20 text-amber-300 border-amber-500/40' };
+      if (score >= 79) return { label: 'Tier A (Playoff Lock)', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' };
+      if (score >= 70) return { label: 'Tier B (Bubble)', color: 'bg-sky-500/20 text-sky-300 border-sky-500/40' };
+      if (score >= 60) return { label: 'Tier C (In the Hunt)', color: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' };
+      return { label: 'Tier D (Rebuilding)', color: 'bg-rose-500/20 text-rose-300 border-rose-500/40' };
+    };
+
+    // 공식 로고 이미지 대신 팀 컬러 기반 자체 배지 — 상표/저작권 리스크 회피.
+    function relativeLuminance(hex) {
+      const c = hex.replace('#', '');
+      const r = parseInt(c.substring(0, 2), 16) / 255;
+      const g = parseInt(c.substring(2, 4), 16) / 255;
+      const b = parseInt(c.substring(4, 6), 16) / 255;
+      const lin = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+      return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+    }
+
+    function TeamBadge({ team, size = 'w-7 h-7 text-[10px]' }) {
+      const bg = team.colorPrimary || '#334155';
+      const textColor = relativeLuminance(bg) > 0.4 ? '#0f172a' : '#ffffff';
+      return (
+        <div
+          className={`${size} rounded-full flex items-center justify-center font-black shrink-0 ring-1 ring-white/10`}
+          style={{ backgroundColor: bg, color: textColor }}
+        >
+          {team.id}
+        </div>
+      );
+    }
+
+    function App() {
+      const [teamsData, setTeamsData] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [loadError, setLoadError] = useState(null);
+
+      const [weights, setWeights] = useState({
+        elo: 40,
+        epa: 30,
+        successRate: 15,
+        recency: 15,
+      });
+
+      const [searchTerm, setSearchTerm] = useState('');
+      const [copied, setCopied] = useState(false);
+      const [expandedId, setExpandedId] = useState(null);
+      const [predictions, setPredictions] = useState(null);
+
+      // GitHub Actions가 매일 생성하는 nfl_data.json 자동 호출.
+      // 캐시버스터(?v=timestamp)를 붙여 브라우저/CDN이 어제 데이터를 캐싱한 채
+      // 계속 보여주는 문제를 방지한다.
+      useEffect(() => {
+        fetch(`./nfl_data.json?v=${Date.now()}`)
+          .then((res) => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+          })
+          .then((data) => {
+            if (!Array.isArray(data) || data.length === 0) {
+              throw new Error('Data is empty');
+            }
+            setTeamsData(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error('Data load error:', err);
+            // 로컬에서 index.html을 더블클릭(file://)으로 열면 브라우저 보안 정책상
+            // fetch가 항상 실패한다 — 이 경우 사용자에게 원인을 바로 알려준다.
+            const isFileProtocol = window.location.protocol === 'file:';
+            setLoadError(
+              isFileProtocol
+                ? 'Opening this file directly via file:// blocks data loading due to browser security policy. Run a local server (e.g. "python3 -m http.server") or visit the GitHub Pages URL instead.'
+                : `Failed to load nfl_data.json (${err.message}). GitHub Actions may not have run yet, or the file path may be wrong.`
+            );
+            setLoading(false);
+          });
+      }, []);
+
+      // Prediction tracker is optional — a missing predictions.json (e.g. before
+      // the first workflow run creates it) should not break the main page.
+      useEffect(() => {
+        fetch(`./predictions.json?v=${Date.now()}`)
+          .then((res) => (res.ok ? res.json() : null))
+          .then((data) => setPredictions(data))
+          .catch(() => setPredictions(null));
+      }, []);
+
+      const applyPreset = (type) => {
+        if (type === 'analytics') setWeights({ elo: 15, epa: 55, successRate: 20, recency: 10 });
+        if (type === 'traditional') setWeights({ elo: 60, epa: 15, successRate: 10, recency: 15 });
+        if (type === 'momentum') setWeights({ elo: 20, epa: 20, successRate: 10, recency: 50 });
+        if (type === 'default') setWeights({ elo: 40, epa: 30, successRate: 15, recency: 15 });
+      };
+
+      const rankedTeams = useMemo(() => {
+        if (!teamsData || teamsData.length === 0) return [];
+
+        const total = weights.elo + weights.epa + weights.successRate + weights.recency || 1;
+        const wElo = weights.elo / total;
+        const wEpa = weights.epa / total;
+        const wSr = weights.successRate / total;
+        const wRec = weights.recency / total;
+
+        const calculated = teamsData.map((team) => {
+          const score = (team.normElo * wElo) + (team.normEpa * wEpa) + (team.normSr * wSr) + (team.normRecency * wRec);
+          return {
+            ...team,
+            dpsScore: score.toFixed(1),
+            rawScore: score,
+          };
+        });
+
+        calculated.sort((a, b) => b.rawScore - a.rawScore);
+
+        return calculated.map((team, idx) => {
+          const rank = idx + 1;
+          const delta = (team.prevRank ?? rank) - rank;
+          return { ...team, rank, delta };
+        });
+      }, [teamsData, weights]);
+
+      const displayedTeams = useMemo(() => {
+        return rankedTeams.filter((team) =>
+          team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          team.id.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }, [rankedTeams, searchTerm]);
+
+      const handleShare = () => {
+        const top5 = rankedTeams.slice(0, 5).map((t, i) => `${i + 1}. ${t.name} (${t.dpsScore} pts)`).join('\n');
+        const text = `⚡ My Custom NFL Power Ranking:\n${top5}\n\nMake yours at ${window.location.href.split('?')[0]}`;
+        navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      };
+
+      if (loading) {
+        return (
+          <div className="flex items-center justify-center min-h-screen text-slate-400">
+            <div className="animate-spin mr-3 text-emerald-400">⚡</div> Loading latest NFL data...
+          </div>
+        );
+      }
+
+      if (loadError) {
+        return (
+          <div className="flex items-center justify-center min-h-screen px-6">
+            <div className="max-w-md bg-slate-900 border border-rose-500/30 rounded-2xl p-6 text-center">
+              <div className="text-rose-400 text-2xl mb-2">⚠️</div>
+              <p className="text-slate-300 text-sm">{loadError}</p>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+          {/* Header */}
+          <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="bg-emerald-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded">Auto Updated</span>
+                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                  NFL DYNAMIC POWER RANKINGS
+                </h1>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                Live custom power rankings, auto-updated daily from normalized metrics
+              </p>
+            </div>
+            <button onClick={handleShare} className="px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors flex items-center gap-1.5 shadow-md self-start md:self-auto">
+              <span>{copied ? '✅ Copied!' : '📢 Share My Rankings'}</span>
+            </button>
+          </header>
+
+          {/* Prediction Accuracy Tracker */}
+          {predictions && predictions.games && Object.keys(predictions.games).length > 0 && (
+            <details className="bg-slate-900/60 border border-slate-800/70 rounded-2xl px-5 py-3 text-xs text-slate-400">
+              <summary className="cursor-pointer font-semibold text-slate-300 select-none flex items-center justify-between">
+                <span>🎯 Prediction Track Record</span>
+                {predictions.summary && predictions.summary.total_settled > 0 ? (
+                  <span className="font-mono text-emerald-400">
+                    {predictions.summary.total_correct}/{predictions.summary.total_settled} ({(predictions.summary.accuracy * 100).toFixed(0)}%)
+                  </span>
+                ) : (
+                  <span className="text-slate-500">no games settled yet</span>
+                )}
+              </summary>
+              <div className="mt-3 space-y-4">
+                <p className="text-slate-500">
+                  Every prediction below was locked in before kickoff using that week's model
+                  (default 40/30/15/15 blend) — nothing here is predicted after the fact.
+                  Scores are a simple estimate from each team's shrunk scoring average, not a
+                  full statistical model.
+                </p>
+
+                {Object.values(predictions.games).filter((g) => g.correct === null).length > 0 && (
+                  <div>
+                    <div className="text-slate-300 font-semibold mb-1">Upcoming picks (not yet played)</div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left">
+                        <thead>
+                          <tr className="text-slate-500 border-b border-slate-800">
+                            <th className="py-1 pr-3">Wk</th>
+                            <th className="py-1 pr-3">Matchup</th>
+                            <th className="py-1 pr-3">Pick</th>
+                            <th className="py-1">Predicted Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.values(predictions.games)
+                            .filter((g) => g.correct === null)
+                            .map((g, i) => (
+                              <tr key={i} className="border-b border-slate-800/50">
+                                <td className="py-1.5 pr-3 font-mono">{g.week}</td>
+                                <td className="py-1.5 pr-3">{g.away} @ {g.home}</td>
+                                <td className="py-1.5 pr-3 font-mono">{g.predicted_winner}</td>
+                                <td className="py-1.5 font-mono text-slate-500">
+                                  {g.away} {g.predicted_away_score} - {g.predicted_home_score} {g.home}
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {predictions.summary && predictions.summary.total_settled > 0 && (
+                  <div>
+                    <div className="text-slate-300 font-semibold mb-1">Settled results</div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left">
+                        <thead>
+                          <tr className="text-slate-500 border-b border-slate-800">
+                            <th className="py-1 pr-3">Wk</th>
+                            <th className="py-1 pr-3">Matchup</th>
+                            <th className="py-1 pr-3">Predicted</th>
+                            <th className="py-1 pr-3">Score (Pred)</th>
+                            <th className="py-1 pr-3">Actual</th>
+                            <th className="py-1 pr-3">Score (Actual)</th>
+                            <th className="py-1">Result</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.values(predictions.games)
+                            .filter((g) => g.correct !== null)
+                            .sort((a, b) => (b.settled_at || '').localeCompare(a.settled_at || ''))
+                            .map((g, i) => (
+                              <tr key={i} className="border-b border-slate-800/50">
+                                <td className="py-1.5 pr-3 font-mono">{g.week}</td>
+                                <td className="py-1.5 pr-3">{g.away} @ {g.home}</td>
+                                <td className="py-1.5 pr-3 font-mono">{g.predicted_winner}</td>
+                                <td className="py-1.5 pr-3 font-mono text-slate-500">
+                                  {g.predicted_away_score}-{g.predicted_home_score}
+                                </td>
+                                <td className="py-1.5 pr-3 font-mono">{g.actual_winner}</td>
+                                <td className="py-1.5 pr-3 font-mono text-slate-500">
+                                  {g.actual_away_score}-{g.actual_home_score}
+                                </td>
+                                <td className="py-1.5">
+                                  {g.correct
+                                    ? <span className="text-emerald-400">✅</span>
+                                    : <span className="text-rose-500">❌</span>}
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </details>
+          )}
+
+          {/* Preset Buttons & Weight Sliders */}
+          <section className="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-5 shadow-xl space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Weight Engine</span>
+              <div className="flex flex-wrap gap-1.5">
+                <button onClick={() => applyPreset('default')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded">Default</button>
+                <button onClick={() => applyPreset('analytics')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded">EPA Efficiency Focus</button>
+                <button onClick={() => applyPreset('traditional')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded">Win/Loss Elo Focus</button>
+                <button onClick={() => applyPreset('momentum')} className="px-2.5 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-amber-400 rounded">Recent Momentum</button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1">
+              <div>
+                <div className="flex justify-between text-xs font-semibold mb-1.5">
+                  <span className="text-slate-300">Elo Rating</span>
+                  <span className="text-emerald-400 font-mono font-bold">{weights.elo}%</span>
+                </div>
+                <input type="range" min="0" max="100" value={weights.elo}
+                  onChange={(e) => setWeights({ ...weights, elo: Number(e.target.value) })}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
+              </div>
+              <div>
+                <div className="flex justify-between text-xs font-semibold mb-1.5">
+                  <span className="text-slate-300">Net EPA/Play</span>
+                  <span className="text-cyan-400 font-mono font-bold">{weights.epa}%</span>
+                </div>
+                <input type="range" min="0" max="100" value={weights.epa}
+                  onChange={(e) => setWeights({ ...weights, epa: Number(e.target.value) })}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
+              </div>
+              <div>
+                <div className="flex justify-between text-xs font-semibold mb-1.5">
+                  <span className="text-slate-300">Success Rate</span>
+                  <span className="text-indigo-400 font-mono font-bold">{weights.successRate}%</span>
+                </div>
+                <input type="range" min="0" max="100" value={weights.successRate}
+                  onChange={(e) => setWeights({ ...weights, successRate: Number(e.target.value) })}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
+              </div>
+              <div>
+                <div className="flex justify-between text-xs font-semibold mb-1.5">
+                  <span className="text-slate-300">Recent Margin</span>
+                  <span className="text-amber-400 font-mono font-bold">{weights.recency}%</span>
+                </div>
+                <input type="range" min="0" max="100" value={weights.recency}
+                  onChange={(e) => setWeights({ ...weights, recency: Number(e.target.value) })}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
+              </div>
+            </div>
+          </section>
+
+          {/* Methodology */}
+          <details className="bg-slate-900/60 border border-slate-800/70 rounded-2xl px-5 py-3 text-xs text-slate-400 group">
+            <summary className="cursor-pointer font-semibold text-slate-300 select-none">
+              ℹ️ Methodology (click to expand)
+            </summary>
+            <div className="mt-3 space-y-2 leading-relaxed">
+              <p>
+                <span className="text-slate-200 font-semibold">Data:</span> Official nflverse game results, collected and recalculated automatically every day.
+              </p>
+              <p>
+                <span className="text-slate-200 font-semibold">The 4 slider metrics</span> are really just win rate and point differential combined in different ratios —
+                Elo Rating (win-rate weighted), Net EPA/Play (point-diff weighted), Success Rate (win rate only), Recent Margin (Elo + extra weight on recent margin).
+                The sliders are the final blend ratio you apply across these 4 values.
+              </p>
+              <p>
+                <span className="text-slate-200 font-semibold">Two internal adjustments the sliders don't control</span> are already baked into these raw values:
+              </p>
+              <ul className="list-disc list-inside pl-2 space-y-1">
+                <li><span className="text-slate-300">Preseason expert consensus prior</span> — weighted heavily early in the season; its influence naturally fades as each team plays more games (Bayesian shrinkage).</li>
+                <li><span className="text-slate-300">SOS (strength-of-schedule adjustment)</span> — re-weights the value of a win or loss based on how strong the opponent was.</li>
+              </ul>
+              <p className="text-slate-500">
+                In short: the sliders blend 4 metrics that are already corrected — preseason expectations and SOS are handled earlier, by fixed logic.
+              </p>
+            </div>
+          </details>
+
+          {/* Search Box */}
+          <div className="flex justify-end">
+            <input
+              type="text"
+              placeholder="Search team (e.g. Chiefs, KC)..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-64 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          {/* Table */}
+          <section className="bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-800 bg-slate-950/70 text-xs text-slate-400 uppercase tracking-wider">
+                    <th className="p-3.5 pl-5">Rank</th>
+                    <th className="p-3.5">Team</th>
+                    <th className="p-3.5 text-right">DPS Score</th>
+                    <th className="p-3.5 text-center">Power Tier</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-sm">
+                  {displayedTeams.map((team) => {
+                    const badge = getTierBadge(team.rawScore);
+                    const isExpanded = expandedId === team.id;
+                    return (
+                      <React.Fragment key={team.id}>
+                        <tr
+                          onClick={() => setExpandedId(isExpanded ? null : team.id)}
+                          className="hover:bg-slate-800/40 transition-colors cursor-pointer"
+                        >
+                          <td className="p-3.5 pl-5 font-bold font-mono">
+                            <span className="text-base text-white mr-2">{team.rank}</span>
+                            {team.delta > 0 && <span className="text-xs text-emerald-400">▲{team.delta}</span>}
+                            {team.delta < 0 && <span className="text-xs text-rose-500">▼{Math.abs(team.delta)}</span>}
+                            {team.delta === 0 && <span className="text-xs text-slate-600">-</span>}
+                          </td>
+                          <td className="p-3.5 flex items-center gap-3">
+                            <TeamBadge team={team} />
+                            <div>
+                              <div className="font-bold text-white text-sm leading-snug">{team.name}</div>
+                              <div className="text-xs text-slate-500 font-mono">{team.record}</div>
+                            </div>
+                            <span className={`ml-1 text-slate-500 text-xs transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▾</span>
+                          </td>
+                          <td className="p-3.5 text-right font-mono font-black text-emerald-400 text-base">
+                            {team.dpsScore}
+                          </td>
+                          <td className="p-3.5 text-center">
+                            <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${badge.color}`}>
+                              {badge.label}
+                            </span>
+                          </td>
+                        </tr>
+                        {isExpanded && (
+                          <tr className="bg-slate-950/60">
+                            <td colSpan={4} className="px-5 pb-4 pt-1">
+                              <div className="border-t border-slate-800 pt-3 space-y-3">
+                                <p className="text-sm text-slate-300 leading-relaxed">
+                                  {team.blurb || 'Data not available yet.'}
+                                </p>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                  <div className="bg-slate-900/70 rounded-lg px-3 py-2">
+                                    <div className="text-slate-500">Elo Rating</div>
+                                    <div className="font-mono font-bold text-slate-200">{team.normElo}</div>
+                                  </div>
+                                  <div className="bg-slate-900/70 rounded-lg px-3 py-2">
+                                    <div className="text-slate-500">Net EPA/Play</div>
+                                    <div className="font-mono font-bold text-slate-200">{team.normEpa}</div>
+                                  </div>
+                                  <div className="bg-slate-900/70 rounded-lg px-3 py-2">
+                                    <div className="text-slate-500">SOS</div>
+                                    <div className="font-mono font-bold text-slate-200">{team.sos != null ? team.sos.toFixed(2) : '–'}</div>
+                                  </div>
+                                  <div className="bg-slate-900/70 rounded-lg px-3 py-2">
+                                    <div className="text-slate-500">Preseason Rank</div>
+                                    <div className="font-mono font-bold text-slate-200">{team.preseasonRank ? `#${team.preseasonRank}` : '–'}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* Disclaimer */}
+          <footer className="text-center text-[11px] text-slate-600 pt-2">
+            This is an independent fan-made analytics site and is not affiliated with, sponsored by, or endorsed by the NFL or any NFL team.
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
