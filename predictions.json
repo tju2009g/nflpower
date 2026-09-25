@@ -266,11 +266,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 21,
       "predicted_at": "2026-09-22T10:27:10.113949+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "ATL",
+      "actual_home_score": 14,
+      "actual_away_score": 35,
+      "correct": false,
+      "settled_at": "2026-09-25T10:41:46.237368+00:00"
     },
     "2026-3-LAC-BUF": {
       "season": 2026,
@@ -530,15 +530,19 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 15,
+    "total_settled": 16,
     "total_correct": 9,
-    "accuracy": 0.6,
+    "accuracy": 0.562,
     "by_week": {
       "2": {
         "total": 15,
         "correct": 9
+      },
+      "3": {
+        "total": 1,
+        "correct": 0
       }
     },
-    "updated_at": "2026-09-24T10:38:01.921183+00:00"
+    "updated_at": "2026-09-25T10:41:46.237368+00:00"
   }
 }
