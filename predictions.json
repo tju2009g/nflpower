@@ -538,11 +538,11 @@
       "predicted_home_score": 21,
       "predicted_away_score": 21,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "CLE",
+      "actual_home_score": 27,
+      "actual_away_score": 24,
+      "correct": false,
+      "settled_at": "2026-10-02T11:28:14.638836+00:00"
     },
     "2026-4-IND-WAS": {
       "season": 2026,
@@ -802,9 +802,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 31,
+    "total_settled": 32,
     "total_correct": 17,
-    "accuracy": 0.548,
+    "accuracy": 0.531,
     "by_week": {
       "2": {
         "total": 15,
@@ -813,8 +813,12 @@
       "3": {
         "total": 16,
         "correct": 8
+      },
+      "4": {
+        "total": 1,
+        "correct": 0
       }
     },
-    "updated_at": "2026-10-01T11:56:28.777599+00:00"
+    "updated_at": "2026-10-02T11:28:14.638836+00:00"
   }
 }
