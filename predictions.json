@@ -555,11 +555,11 @@
       "predicted_home_score": 24,
       "predicted_away_score": 24,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "IND",
+      "actual_home_score": 13,
+      "actual_away_score": 30,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-TEN-BAL": {
       "season": 2026,
@@ -572,11 +572,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 21,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "BAL",
+      "actual_home_score": 24,
+      "actual_away_score": 18,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-NE-BUF": {
       "season": 2026,
@@ -589,11 +589,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 21,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "NE",
+      "actual_home_score": 26,
+      "actual_away_score": 29,
+      "correct": false,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-NYJ-CHI": {
       "season": 2026,
@@ -606,11 +606,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 21,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "CHI",
+      "actual_home_score": 23,
+      "actual_away_score": 12,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-JAX-CIN": {
       "season": 2026,
@@ -623,11 +623,11 @@
       "predicted_home_score": 21,
       "predicted_away_score": 23,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "JAX",
+      "actual_home_score": 17,
+      "actual_away_score": 22,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-DAL-HOU": {
       "season": 2026,
@@ -640,11 +640,11 @@
       "predicted_home_score": 22,
       "predicted_away_score": 24,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "DAL",
+      "actual_home_score": 30,
+      "actual_away_score": 34,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-ARI-NYG": {
       "season": 2026,
@@ -657,11 +657,11 @@
       "predicted_home_score": 22,
       "predicted_away_score": 21,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "NYG",
+      "actual_home_score": 36,
+      "actual_away_score": 24,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-LAR-PHI": {
       "season": 2026,
@@ -674,11 +674,11 @@
       "predicted_home_score": 21,
       "predicted_away_score": 22,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "LAR",
+      "actual_home_score": 20,
+      "actual_away_score": 24,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-GB-TB": {
       "season": 2026,
@@ -691,11 +691,11 @@
       "predicted_home_score": 24,
       "predicted_away_score": 22,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "GB",
+      "actual_home_score": 14,
+      "actual_away_score": 17,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-MIA-MIN": {
       "season": 2026,
@@ -708,11 +708,11 @@
       "predicted_home_score": 24,
       "predicted_away_score": 18,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "MIN",
+      "actual_home_score": 15,
+      "actual_away_score": 10,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-KC-LV": {
       "season": 2026,
@@ -725,11 +725,11 @@
       "predicted_home_score": 22,
       "predicted_away_score": 23,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "KC",
+      "actual_home_score": 27,
+      "actual_away_score": 30,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-LAC-SEA": {
       "season": 2026,
@@ -742,11 +742,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 19,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "SEA",
+      "actual_home_score": 30,
+      "actual_away_score": 23,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-DEN-SF": {
       "season": 2026,
@@ -759,11 +759,11 @@
       "predicted_home_score": 25,
       "predicted_away_score": 20,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "SF",
+      "actual_home_score": 24,
+      "actual_away_score": 14,
+      "correct": true,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-DET-CAR": {
       "season": 2026,
@@ -776,11 +776,11 @@
       "predicted_home_score": 26,
       "predicted_away_score": 25,
       "predicted_at": "2026-09-29T11:41:41.616533+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "CAR",
+      "actual_home_score": 32,
+      "actual_away_score": 26,
+      "correct": false,
+      "settled_at": "2026-10-05T12:50:38.785123+00:00"
     },
     "2026-4-ATL-NO": {
       "season": 2026,
@@ -802,9 +802,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 32,
-    "total_correct": 17,
-    "accuracy": 0.531,
+    "total_settled": 46,
+    "total_correct": 29,
+    "accuracy": 0.63,
     "by_week": {
       "2": {
         "total": 15,
@@ -815,10 +815,10 @@
         "correct": 8
       },
       "4": {
-        "total": 1,
-        "correct": 0
+        "total": 15,
+        "correct": 12
       }
     },
-    "updated_at": "2026-10-04T11:25:25.241512+00:00"
+    "updated_at": "2026-10-05T12:50:38.785123+00:00"
   }
 }
