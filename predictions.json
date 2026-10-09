@@ -810,11 +810,11 @@
       "predicted_home_score": 25,
       "predicted_away_score": 23,
       "predicted_at": "2026-10-06T12:19:13.570966+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "TB",
+      "actual_home_score": 16,
+      "actual_away_score": 24,
+      "correct": false,
+      "settled_at": "2026-10-09T12:11:24.624451+00:00"
     },
     "2026-5-PHI-JAX": {
       "season": 2026,
@@ -1057,9 +1057,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 47,
+    "total_settled": 48,
     "total_correct": 29,
-    "accuracy": 0.617,
+    "accuracy": 0.604,
     "by_week": {
       "2": {
         "total": 15,
@@ -1072,8 +1072,12 @@
       "4": {
         "total": 16,
         "correct": 12
+      },
+      "5": {
+        "total": 1,
+        "correct": 0
       }
     },
-    "updated_at": "2026-10-08T12:21:22.347236+00:00"
+    "updated_at": "2026-10-09T12:11:24.624451+00:00"
   }
 }
