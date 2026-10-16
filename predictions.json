@@ -1065,11 +1065,11 @@
       "predicted_home_score": 21,
       "predicted_away_score": 23,
       "predicted_at": "2026-10-13T13:03:03.539054+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "DEN",
+      "actual_home_score": 17,
+      "actual_away_score": 14,
+      "correct": false,
+      "settled_at": "2026-10-16T10:14:49.814893+00:00"
     },
     "2026-6-HOU-JAX": {
       "season": 2026,
@@ -1295,9 +1295,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 61,
+    "total_settled": 62,
     "total_correct": 39,
-    "accuracy": 0.639,
+    "accuracy": 0.629,
     "by_week": {
       "2": {
         "total": 15,
@@ -1314,8 +1314,12 @@
       "5": {
         "total": 14,
         "correct": 10
+      },
+      "6": {
+        "total": 1,
+        "correct": 0
       }
     },
-    "updated_at": "2026-10-15T10:27:26.125870+00:00"
+    "updated_at": "2026-10-16T10:14:49.814893+00:00"
   }
 }
