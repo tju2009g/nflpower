@@ -1303,11 +1303,11 @@
       "predicted_home_score": 22,
       "predicted_away_score": 22,
       "predicted_at": "2026-10-20T10:31:21.045411+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "CHI",
+      "actual_home_score": 30,
+      "actual_away_score": 24,
+      "correct": true,
+      "settled_at": "2026-10-23T10:36:35.614143+00:00"
     },
     "2026-7-PIT-NO": {
       "season": 2026,
@@ -1533,9 +1533,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 75,
-    "total_correct": 47,
-    "accuracy": 0.627,
+    "total_settled": 76,
+    "total_correct": 48,
+    "accuracy": 0.632,
     "by_week": {
       "2": {
         "total": 15,
@@ -1556,8 +1556,12 @@
       "6": {
         "total": 14,
         "correct": 8
+      },
+      "7": {
+        "total": 1,
+        "correct": 1
       }
     },
-    "updated_at": "2026-10-22T10:45:27.556070+00:00"
+    "updated_at": "2026-10-23T10:36:35.614143+00:00"
   }
 }
