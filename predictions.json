@@ -1541,11 +1541,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 23,
       "predicted_at": "2026-10-27T11:10:03.308440+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "GB",
+      "actual_home_score": 27,
+      "actual_away_score": 19,
+      "correct": true,
+      "settled_at": "2026-10-30T11:46:10.120184+00:00"
     },
     "2026-8-BAL-BUF": {
       "season": 2026,
@@ -1771,9 +1771,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 89,
-    "total_correct": 55,
-    "accuracy": 0.618,
+    "total_settled": 90,
+    "total_correct": 56,
+    "accuracy": 0.622,
     "by_week": {
       "2": {
         "total": 15,
@@ -1798,8 +1798,12 @@
       "7": {
         "total": 14,
         "correct": 8
+      },
+      "8": {
+        "total": 1,
+        "correct": 1
       }
     },
-    "updated_at": "2026-10-29T11:52:38.296682+00:00"
+    "updated_at": "2026-10-30T11:46:10.120184+00:00"
   }
 }
