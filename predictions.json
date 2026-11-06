@@ -1779,11 +1779,11 @@
       "predicted_home_score": 20,
       "predicted_away_score": 25,
       "predicted_at": "2026-11-03T13:07:50.923670+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "JAX",
+      "actual_home_score": 10,
+      "actual_away_score": 33,
+      "correct": true,
+      "settled_at": "2026-11-06T13:20:59.695248+00:00"
     },
     "2026-9-CIN-ATL": {
       "season": 2026,
@@ -2026,9 +2026,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 103,
-    "total_correct": 64,
-    "accuracy": 0.621,
+    "total_settled": 104,
+    "total_correct": 65,
+    "accuracy": 0.625,
     "by_week": {
       "2": {
         "total": 15,
@@ -2057,8 +2057,12 @@
       "8": {
         "total": 14,
         "correct": 9
+      },
+      "9": {
+        "total": 1,
+        "correct": 1
       }
     },
-    "updated_at": "2026-11-05T13:37:56.438421+00:00"
+    "updated_at": "2026-11-06T13:20:59.695248+00:00"
   }
 }
