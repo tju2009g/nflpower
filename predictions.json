@@ -2034,11 +2034,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 22,
       "predicted_at": "2026-11-10T13:52:08.929780+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "WAS",
+      "actual_home_score": 21,
+      "actual_away_score": 24,
+      "correct": false,
+      "settled_at": "2026-11-13T13:31:19.110436+00:00"
     },
     "2026-10-NE-DET": {
       "season": 2026,
@@ -2264,9 +2264,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 118,
+    "total_settled": 119,
     "total_correct": 77,
-    "accuracy": 0.653,
+    "accuracy": 0.647,
     "by_week": {
       "2": {
         "total": 15,
@@ -2299,8 +2299,12 @@
       "9": {
         "total": 15,
         "correct": 13
+      },
+      "10": {
+        "total": 1,
+        "correct": 0
       }
     },
-    "updated_at": "2026-11-12T14:06:31.928442+00:00"
+    "updated_at": "2026-11-13T13:31:19.110436+00:00"
   }
 }
