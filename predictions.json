@@ -2272,11 +2272,11 @@
       "predicted_home_score": 25,
       "predicted_away_score": 22,
       "predicted_at": "2026-11-17T15:00:42.194903+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "HOU",
+      "actual_home_score": 26,
+      "actual_away_score": 3,
+      "correct": true,
+      "settled_at": "2026-11-20T14:29:47.921388+00:00"
     },
     "2026-11-MIA-BUF": {
       "season": 2026,
@@ -2485,9 +2485,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 132,
-    "total_correct": 88,
-    "accuracy": 0.667,
+    "total_settled": 133,
+    "total_correct": 89,
+    "accuracy": 0.669,
     "by_week": {
       "2": {
         "total": 15,
@@ -2524,8 +2524,12 @@
       "10": {
         "total": 14,
         "correct": 11
+      },
+      "11": {
+        "total": 1,
+        "correct": 1
       }
     },
-    "updated_at": "2026-11-19T14:48:04.558658+00:00"
+    "updated_at": "2026-11-20T14:29:47.921388+00:00"
   }
 }
