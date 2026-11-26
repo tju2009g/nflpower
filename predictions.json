@@ -2493,11 +2493,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 21,
       "predicted_at": "2026-11-24T16:36:41.828022+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "LAR",
+      "actual_home_score": 26,
+      "actual_away_score": 13,
+      "correct": true,
+      "settled_at": "2026-11-26T15:54:48.926687+00:00"
     },
     "2026-12-CHI-DET": {
       "season": 2026,
@@ -2757,9 +2757,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 145,
-    "total_correct": 98,
-    "accuracy": 0.676,
+    "total_settled": 146,
+    "total_correct": 99,
+    "accuracy": 0.678,
     "by_week": {
       "2": {
         "total": 15,
@@ -2800,8 +2800,12 @@
       "11": {
         "total": 13,
         "correct": 10
+      },
+      "12": {
+        "total": 1,
+        "correct": 1
       }
     },
-    "updated_at": "2026-11-25T16:19:02.662406+00:00"
+    "updated_at": "2026-11-26T15:54:48.926687+00:00"
   }
 }
