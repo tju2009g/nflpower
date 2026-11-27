@@ -2510,11 +2510,11 @@
       "predicted_home_score": 24,
       "predicted_away_score": 24,
       "predicted_at": "2026-11-24T16:36:41.828022+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "CHI",
+      "actual_home_score": 35,
+      "actual_away_score": 39,
+      "correct": true,
+      "settled_at": "2026-11-27T15:43:26.228617+00:00"
     },
     "2026-12-PHI-DAL": {
       "season": 2026,
@@ -2527,11 +2527,11 @@
       "predicted_home_score": 26,
       "predicted_away_score": 22,
       "predicted_at": "2026-11-24T16:36:41.828022+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "PHI",
+      "actual_home_score": 38,
+      "actual_away_score": 39,
+      "correct": false,
+      "settled_at": "2026-11-27T15:43:26.228617+00:00"
     },
     "2026-12-KC-BUF": {
       "season": 2026,
@@ -2544,11 +2544,11 @@
       "predicted_home_score": 23,
       "predicted_away_score": 23,
       "predicted_at": "2026-11-24T16:36:41.828022+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "BUF",
+      "actual_home_score": 13,
+      "actual_away_score": 10,
+      "correct": true,
+      "settled_at": "2026-11-27T15:43:26.228617+00:00"
     },
     "2026-12-DEN-PIT": {
       "season": 2026,
@@ -2757,8 +2757,8 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 146,
-    "total_correct": 99,
+    "total_settled": 149,
+    "total_correct": 101,
     "accuracy": 0.678,
     "by_week": {
       "2": {
@@ -2802,10 +2802,10 @@
         "correct": 10
       },
       "12": {
-        "total": 1,
-        "correct": 1
+        "total": 4,
+        "correct": 3
       }
     },
-    "updated_at": "2026-11-26T15:54:48.926687+00:00"
+    "updated_at": "2026-11-27T15:43:26.228617+00:00"
   }
 }
