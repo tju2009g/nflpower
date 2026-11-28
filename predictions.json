@@ -2561,11 +2561,11 @@
       "predicted_home_score": 21,
       "predicted_away_score": 22,
       "predicted_at": "2026-11-24T16:36:41.828022+00:00",
-      "actual_winner": null,
-      "actual_home_score": null,
-      "actual_away_score": null,
-      "correct": null,
-      "settled_at": null
+      "actual_winner": "PIT",
+      "actual_home_score": 27,
+      "actual_away_score": 5,
+      "correct": false,
+      "settled_at": "2026-11-28T14:39:03.879683+00:00"
     },
     "2026-12-NO-CIN": {
       "season": 2026,
@@ -2757,9 +2757,9 @@
   },
   "summary": {
     "season": 2026,
-    "total_settled": 149,
+    "total_settled": 150,
     "total_correct": 101,
-    "accuracy": 0.678,
+    "accuracy": 0.673,
     "by_week": {
       "2": {
         "total": 15,
@@ -2802,10 +2802,10 @@
         "correct": 10
       },
       "12": {
-        "total": 4,
+        "total": 5,
         "correct": 3
       }
     },
-    "updated_at": "2026-11-27T15:43:26.228617+00:00"
+    "updated_at": "2026-11-28T14:39:03.879683+00:00"
   }
 }
